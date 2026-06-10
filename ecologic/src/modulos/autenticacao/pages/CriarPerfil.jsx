@@ -1,8 +1,38 @@
 import { useState } from 'react'
+import { useCriarPerfil } from '../hooks/useCriarPerfil'
 import '../styles/criar-perfil.css'
 
 function CriarPerfil() {
   const [tipoUsuario, setTipoUsuario] = useState('')
+  
+  // Trazendo a lógica de requisição do seu hook
+  const { cadastrarUsuario, loading, erro } = useCriarPerfil()
+
+  const handleCriarPerfil = async (event) => {
+    event.preventDefault()
+
+    const formData = new FormData(event.target)
+    const dados = Object.fromEntries(formData)
+
+    // Validações simples
+    if (dados.senha !== dados.confirmarSenha) {
+      alert("As senhas não coincidem!")
+      return
+    }
+    if (!dados.termos) {
+      alert("Você precisa confirmar que os dados pertencem a um usuario autorizado.")
+      return
+    }
+
+    try {
+      await cadastrarUsuario(dados, tipoUsuario)
+      alert("Perfil criado com sucesso!")
+      // Se quiser redirecionar para o login após o sucesso, descomente a linha abaixo:
+      // window.location.href = '/login'
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
     <main className="criar-perfil-page">
@@ -46,7 +76,8 @@ function CriarPerfil() {
             </p>
           </div>
 
-          <form className="criar-perfil-form">
+          {/* Adicionando a chamada do onSubmit aqui */}
+          <form className="criar-perfil-form" onSubmit={handleCriarPerfil}>
             <div className="criar-perfil-grid">
               <label htmlFor="nome">
                 Nome completo
@@ -56,6 +87,7 @@ function CriarPerfil() {
                   type="text"
                   placeholder="Ex.: Carlos Almeida"
                   autoComplete="name"
+                  required
                 />
               </label>
 
@@ -67,6 +99,7 @@ function CriarPerfil() {
                   type="email"
                   placeholder="usuario@escola.com"
                   autoComplete="email"
+                  required
                 />
               </label>
             </div>
@@ -80,6 +113,7 @@ function CriarPerfil() {
                   type="password"
                   placeholder="Crie uma senha"
                   autoComplete="new-password"
+                  required
                 />
               </label>
 
@@ -91,6 +125,7 @@ function CriarPerfil() {
                   type="password"
                   placeholder="Repita a senha"
                   autoComplete="new-password"
+                  required
                 />
               </label>
             </div>
@@ -102,6 +137,7 @@ function CriarPerfil() {
                 name="tipo"
                 value={tipoUsuario}
                 onChange={(event) => setTipoUsuario(event.target.value)}
+                required
               >
                 <option value="" disabled>
                   Selecione o tipo
@@ -118,6 +154,7 @@ function CriarPerfil() {
                   id="cargo"
                   name="cargo"
                   type="text"
+                  required
                 />
               </label>
             )}
@@ -129,7 +166,7 @@ function CriarPerfil() {
                   id="titulacao"
                   name="titulacao"
                   type="text"
-                  
+                  required
                 />
               </label>
             )}
@@ -139,7 +176,12 @@ function CriarPerfil() {
               Confirmo que os dados pertencem a um usuario autorizado.
             </label>
 
-            <button type="submit">Criar perfil</button>
+            {/* Mostrando mensagem de erro se o back-end reclamar de algo */}
+            {erro && <p style={{ color: '#d93025', fontSize: '14px' }}>{erro}</p>}
+
+            <button type="submit" disabled={loading}>
+              {loading ? 'Criando...' : 'Criar perfil'}
+            </button>
           </form>
 
           <p className="criar-perfil-login">
