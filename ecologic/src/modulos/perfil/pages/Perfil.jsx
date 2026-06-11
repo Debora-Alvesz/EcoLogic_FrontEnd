@@ -43,7 +43,7 @@ const Perfil = ({ onNavigate }) => {
 
   const atributoPerfil =
     usuario.tipo === 'ADMINISTRADOR'
-      ? usuario.cargo
+      ? usuario.cargo || usuario.atributoEspecifico
       : usuario.titulacao || usuario.atributoEspecifico;
 
   return (

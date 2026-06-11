@@ -76,8 +76,8 @@ export const useNavbar = () => {
 
           // Define a função exibida na NavBar com base no tipo
           const funcao = data.tipo === 'ADMINISTRADOR' 
-            ? data.cargo || 'Administrador' 
-            : data.titulacao || 'Diretor';
+            ? data.cargo || data.atributoEspecifico || 'Administrador' 
+            : data.titulacao || data.atributoEspecifico || 'Diretor';
 
           setUsuario({
             nome: data.nome || 'Usuário',
