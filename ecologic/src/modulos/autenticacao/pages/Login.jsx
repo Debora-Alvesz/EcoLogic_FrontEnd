@@ -14,7 +14,11 @@ function Login() {
 
     try {
       await login(email, senha)
-      setSucesso('Login realizado com sucesso.')
+      setSucesso('Login realizado com sucesso. Redirecionando...')
+      
+      // Redirecionamento nativo do navegador
+      window.location.href = '/dashboard'
+      
     } catch (error) {
       console.error(error)
     }
