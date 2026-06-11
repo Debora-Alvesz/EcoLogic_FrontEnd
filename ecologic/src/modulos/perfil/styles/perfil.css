@@ -1,0 +1,189 @@
+.perfil-page {
+  min-height: 100vh;
+  display: block;
+  padding: 0;
+  box-sizing: border-box;
+  background: #eef2f6;
+  color: #002b55;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.perfil-shell {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.85fr) minmax(520px, 1.15fr);
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.perfil-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 42px;
+  padding: 42px;
+  background: #ffffff;
+  border-right: 1px solid #d5dde7;
+}
+
+.perfil-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.perfil-logo {
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: #0499df;
+  box-shadow: 0 14px 28px rgba(4, 153, 223, 0.24);
+}
+
+.perfil-logo svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.perfil-brand strong,
+.perfil-brand small {
+  display: block;
+}
+
+.perfil-brand strong {
+  color: #002b55;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.perfil-brand small {
+  color: #59677d;
+  font-size: 14px;
+}
+
+.perfil-eyebrow {
+  color: #0088d1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.perfil-copy h1 {
+  margin: 18px 0 14px;
+  color: #002b55;
+  font-size: clamp(34px, 4.6vw, 54px);
+  line-height: 1.04;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.perfil-copy p,
+.perfil-header p {
+  color: #59677d;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.perfil-card {
+  padding: 42px;
+  background: #f8fbfd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.perfil-header {
+  max-width: 620px;
+  margin-bottom: 28px;
+}
+
+.perfil-header h2 {
+  margin: 10px 0 8px;
+  color: #002b55;
+  font-size: 34px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.perfil-info-container {
+  display: grid;
+  gap: 18px;
+  max-width: 620px;
+}
+
+.perfil-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Adaptado da classe .criar-perfil-metric para exibir os dados */
+.perfil-info-box {
+  display: grid;
+  gap: 5px;
+  padding: 18px;
+  border: 1px solid #d5dde7;
+  border-radius: 8px;
+  background: #ffffff; /* Fundo branco para destacar os dados do fundo #f8fbfd */
+  box-shadow: 0 2px 4px rgba(0, 43, 85, 0.02);
+}
+
+.perfil-info-box span {
+  color: #0088d1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.perfil-info-box strong {
+  color: #002b55;
+  font-size: 18px;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+@media (max-width: 940px) {
+  .perfil-page {
+    padding: 0;
+  }
+
+  .perfil-shell {
+    min-height: 100vh;
+    grid-template-columns: 1fr;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .perfil-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #d5dde7;
+    padding: 28px 20px;
+    gap: 28px;
+  }
+
+  .perfil-card {
+    padding: 28px 20px;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .perfil-grid {
+    grid-template-columns: 1fr;
+  }
+}

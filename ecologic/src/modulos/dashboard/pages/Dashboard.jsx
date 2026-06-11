@@ -17,6 +17,14 @@ function Dashboard({ onNavigate }) {
         >
           Ir para Criar Perfil
         </button>
+
+         <button 
+          style={styles.button}
+          onClick={() => onNavigate('perfil')}
+        >
+          Ir para Perfil
+        </button>
+        
       </div>
     </div>
   )
