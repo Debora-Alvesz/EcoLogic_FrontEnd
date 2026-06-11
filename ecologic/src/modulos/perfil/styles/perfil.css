@@ -1,5 +1,5 @@
 .perfil-page {
-  min-height: 100vh;
+  min-height: calc(100vh - 72px);
   display: block;
   padding: 0;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
 
 .perfil-shell {
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 72px);
   display: grid;
   grid-template-columns: minmax(300px, 0.85fr) minmax(520px, 1.15fr);
   overflow: hidden;
@@ -23,7 +23,7 @@
 .perfil-sidebar {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 42px;
   padding: 42px;
   background: #ffffff;
@@ -186,4 +186,40 @@
   .perfil-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.perfil-logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 18px;
+  background-color: transparent;
+  color: #d93025;
+  border: 1px solid #d93025;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  margin-top: 40px;
+  box-sizing: border-box;
+}
+
+.perfil-logout-btn:hover {
+  background-color: #d93025;
+  color: #ffffff;
+  box-shadow: 0 8px 16px rgba(217, 48, 37, 0.15);
+}
+
+.perfil-logout-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }

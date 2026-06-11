@@ -1,7 +1,7 @@
 import usePerfil from '../hooks/usePerfil';
 import '../styles/perfil.css';
 
-const Perfil = () => {
+const Perfil = ({ onNavigate }) => {
   const { usuario, loading, error } = usePerfil();
 
   const formatarData = (dataString) => {
@@ -11,6 +11,15 @@ const Perfil = () => {
       day: '2-digit', month: '2-digit', year: 'numeric',
       hour: '2-digit', minute: '2-digit'
     });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    if (onNavigate) {
+      onNavigate('login');
+    } else {
+      window.location.href = '/login';
+    }
   };
 
   if (loading) {
@@ -41,26 +50,22 @@ const Perfil = () => {
     <div className="perfil-page">
       <div className="perfil-shell">
         
-        {/* Barra lateral / Branding */}
+        {/* Barra lateral */}
         <div className="perfil-sidebar">
-          <div className="perfil-brand">
-            <div className="perfil-logo">
-              <svg viewBox="0 0 24 24">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </div>
-            <div>
-              <strong>EcoLogic</strong>
-              <small>Dashboard Estratégico</small>
-            </div>
-          </div>
-          
-          <div className="perfil-copy">
+          <div className="perfil-copy" style={{ marginTop: '20px' }}>
             <span className="perfil-eyebrow">Área do Usuário</span>
             <h1>Olá, {usuario.nome}.</h1>
             <p>Aqui está o panorama das informações cadastradas no seu perfil.</p>
           </div>
+
+          <button className="perfil-logout-btn" onClick={handleLogout}>
+            <svg viewBox="0 0 24 24">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Sair da Conta
+          </button>
         </div>
 
         {/* Conteúdo Principal do Perfil */}

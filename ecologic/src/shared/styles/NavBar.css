@@ -1,0 +1,281 @@
+/* Estilos para a Barra de Navegação Superior (NavBar) */
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #d5dde7;
+  padding: 0 24px;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Esquerda - Branding e Logo */
+.navbar-brand-section {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 100%;
+}
+
+.navbar-brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.2s;
+}
+
+.navbar-brand-wrapper:hover {
+  opacity: 0.85;
+}
+
+.navbar-logo {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #0499df;
+  box-shadow: 0 8px 16px rgba(4, 153, 223, 0.2);
+}
+
+.navbar-logo svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.navbar-brand-text strong {
+  display: block;
+  color: #002b55;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.navbar-brand-text small {
+  display: block;
+  color: #59677d;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Divisor Vertical */
+.navbar-divider {
+  width: 1px;
+  height: 36px;
+  background-color: #d5dde7;
+}
+
+/* Centro-Esquerda - Página Ativa */
+.navbar-page-title-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.navbar-page-title-section h2 {
+  margin: 0;
+  color: #002b55;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.navbar-page-title-section p {
+  margin: 2px 0 0;
+  color: #59677d;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Seção Direita - Ações e Perfil */
+.navbar-actions-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Barra de Busca */
+.navbar-search-container {
+  position: relative;
+  width: 320px;
+}
+
+.navbar-search-container svg {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  stroke: #59677d;
+  stroke-width: 2;
+  fill: none;
+}
+
+.navbar-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  background-color: #f1f5f9;
+  color: #002b55;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  padding: 9px 16px 9px 40px;
+  transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.navbar-search-input::placeholder {
+  color: #59677d;
+  opacity: 0.8;
+}
+
+.navbar-search-input:focus {
+  background-color: #ffffff;
+  border-color: #0499df;
+  box-shadow: 0 0 0 3px rgba(4, 153, 223, 0.1);
+}
+
+/* Ícone de Notificação */
+.navbar-notification-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.navbar-notification-btn:hover {
+  background-color: #f1f5f9;
+}
+
+.navbar-notification-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: #002b55;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.navbar-notification-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  background-color: #e53e3e;
+  border-radius: 50%;
+  border: 1.5px solid #ffffff;
+}
+
+/* Bloco de Perfil do Usuário */
+.navbar-profile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  user-select: none;
+}
+
+.navbar-profile-wrapper:hover {
+  background-color: #f8fbfd;
+}
+
+.navbar-profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.navbar-profile-info strong {
+  display: block;
+  color: #002b55;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.navbar-profile-info small {
+  display: block;
+  color: #59677d;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.navbar-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #e0f2fe;
+  color: #0284c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  border: 1px solid #bae6fd;
+  transition: transform 0.2s;
+}
+
+.navbar-profile-wrapper:hover .navbar-avatar {
+  transform: scale(1.05);
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .navbar-search-container {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    height: auto;
+    flex-direction: column;
+    padding: 16px;
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .navbar-brand-section {
+    justify-content: space-between;
+    height: auto;
+  }
+
+  .navbar-divider {
+    display: none;
+  }
+
+  .navbar-actions-section {
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .navbar-search-container {
+    flex-grow: 1;
+    width: auto;
+  }
+}
