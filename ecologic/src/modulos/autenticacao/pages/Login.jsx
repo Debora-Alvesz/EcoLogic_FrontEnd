@@ -1,6 +1,25 @@
+import { useState } from 'react'
+import { useLogin } from '../hooks/useLogin'
 import '../styles/login.css'
 
 function Login() {
+  const [email, setEmail] = useState('')
+  const [senha, setSenha] = useState('')
+  const [sucesso, setSucesso] = useState('')
+  const { login, loading, erro } = useLogin()
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    setSucesso('')
+
+    try {
+      await login(email, senha)
+      setSucesso('Login realizado com sucesso.')
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <main className="login-page">
       <section className="login-brand-panel" aria-label="Apresentacao EcoLogic">
@@ -40,7 +59,7 @@ function Login() {
             Informe suas credenciais para acessar o EcoLogic.
           </p>
 
-          <form className="login-form">
+          <form className="login-form" onSubmit={handleLogin}>
             <label htmlFor="login-email">
               Email
               <input
@@ -49,6 +68,9 @@ function Login() {
                 type="email"
                 placeholder="seuemail@escola.com"
                 autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
               />
             </label>
 
@@ -60,6 +82,9 @@ function Login() {
                 type="password"
                 placeholder="Digite sua senha"
                 autoComplete="current-password"
+                value={senha}
+                onChange={(event) => setSenha(event.target.value)}
+                required
               />
             </label>
 
@@ -71,7 +96,14 @@ function Login() {
               <a href="/recuperar-senha">Esqueci minha senha</a>
             </div>
 
-            <button type="submit">Entrar</button>
+            {erro && <p className="login-message login-message-error">{erro}</p>}
+            {sucesso && (
+              <p className="login-message login-message-success">{sucesso}</p>
+            )}
+
+            <button type="submit" disabled={loading}>
+              {loading ? 'Entrando...' : 'Entrar'}
+            </button>
           </form>
 
           <p className="login-create-account">

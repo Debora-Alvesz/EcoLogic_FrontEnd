@@ -219,6 +219,33 @@
   transform: translateY(-1px);
 }
 
+.login-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+  transform: none;
+}
+
+.login-message {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.login-message-error {
+  border: 1px solid #f3b8b8;
+  background: #fff1f1;
+  color: #d71920;
+}
+
+.login-message-success {
+  border: 1px solid #a7d8ef;
+  background: #eef9ff;
+  color: #0074ad;
+}
+
 .login-create-account {
   margin: 28px 0 0;
   text-align: center;
