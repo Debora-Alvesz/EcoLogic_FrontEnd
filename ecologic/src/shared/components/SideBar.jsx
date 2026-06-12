@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/side-bar.css';
 import { useSideBar } from '../hooks/SideBar';
 
-const SideBar = ({ isMobileMenuOpen, closeMobileMenu }) => {
+const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu }) => {
   // Inicializando com o Dashboard selecionado
   const { activeTab, handleTabChange } = useSideBar('Dashboard');
 
@@ -85,7 +85,15 @@ const SideBar = ({ isMobileMenuOpen, closeMobileMenu }) => {
             <button
               key={item.id}
               className={`sidebar-item ${activeTab === item.id ? 'active' : ''}`}
-              onClick={() => handleTabChange(item.id)}
+              
+              // A tualizamos o onClick para avisar o App.jsx quando mudar de tela
+              onClick={() => {
+                handleTabChange(item.id);
+                
+                // Redireciona apenas se for uma das telas que já criamos no App.jsx
+                if (item.id === 'Produtos') onNavigate('produtos');
+                if (item.id === 'Dashboard') onNavigate('dashboard');
+              }}
             >
               <div className="sidebar-item-content">
                 {item.icon}

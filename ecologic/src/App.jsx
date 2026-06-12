@@ -4,8 +4,10 @@ import Dashboard from './modulos/dashboard/pages/Dashboard'
 import Login from './modulos/autenticacao/pages/Login'
 import CriarPerfil from './modulos/autenticacao/pages/CriarPerfil'
 import Perfil from './modulos/perfil/pages/Perfil'
+import Produtos from './modulos/Produtos/pages/Produtos'
 import NavBar from './shared/components/NavBar'
 import SideBar from './shared/components/SideBar'
+
 
 // Função para identificar a rota inicial a partir da URL
 const getInitialPage = () => {
@@ -13,6 +15,7 @@ const getInitialPage = () => {
   if (path === '/dashboard') return 'dashboard'
   if (path === '/perfil') return 'perfil'
   if (path === '/criar-perfil') return 'criar-perfil'
+  if (path === '/produtos') return 'produtos'
   return 'login' // Login é a tela padrão inicial
 }
 
@@ -34,7 +37,7 @@ function App() {
   }
 
   // Verifica se a página atual deve exibir barra superior e barra lateral
-  const showNavBar = currentPage === 'dashboard' || currentPage === 'perfil'
+  const showNavBar = currentPage === 'dashboard' || currentPage === 'perfil' || currentPage === 'produtos'
   const showSideBar = showNavBar
 
   return (
@@ -48,18 +51,21 @@ function App() {
       )}
 
       <div className={`app-container ${showSideBar ? 'with-sidebar' : 'full-width'}`}>
-        {showSideBar && (
-          <SideBar 
-            isMobileMenuOpen={isMobileMenuOpen}
-            closeMobileMenu={() => setIsMobileMenuOpen(false)}
-          />
-        )}
+  {showSideBar && (
+    <SideBar 
+      currentPage={currentPage}              
+      onNavigate={handleNavigateWithMenu}     
+      isMobileMenuOpen={isMobileMenuOpen}
+      closeMobileMenu={() => setIsMobileMenuOpen(false)}
+    />
+  )}
 
         <main className="app-content">
           {currentPage === 'dashboard' && <Dashboard onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'login' && <Login onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'criar-perfil' && <CriarPerfil onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'perfil' && <Perfil onNavigate={handleNavigateWithMenu} />}
+          {currentPage === 'produtos' && <Produtos onNavigate={handleNavigateWithMenu} />}
         </main>
       </div>
     </>
