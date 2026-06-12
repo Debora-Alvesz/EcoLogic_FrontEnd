@@ -29,6 +29,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  gap: 16px;
 }
 
 .produtos-filter-group {
@@ -52,18 +53,16 @@
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
-  background-color: #fff; /* Fundo branco */
-  color: #333333;         /* FORÇA O TEXTO A FICAR ESCURO */
+  background-color: #fff;
+  color: #333333;         
   cursor: pointer;
 }
 
-/* Garante que o texto de todas as opções dentro do select também fique visível */
 .produtos-select option {
   color: #333333;
   background-color: #ffffff;
 }
 
-/* Força o select de filtro a ter um tamanho fixo menor */
 .produtos-filter-group .produtos-select {
   width: 180px;
 }
@@ -76,6 +75,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  white-space: nowrap; /* Evita que o texto do botão quebre em duas linhas */
 }
 
 /* --- TABELA --- */
@@ -224,4 +224,74 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+}
+
+/* ==========================================================================
+   REGRAS DE RESPONSIVIDADE (MOBILE / TABLET) - ATUALIZADO
+   ========================================================================== */
+@media (max-width: 768px) {
+  .produtos-container {
+    padding: 20px 12px; /* Diminui o recuo das bordas da tela */
+  }
+
+  .produtos-title {
+    font-size: 26px; 
+  }
+
+  /* Faz a barra de ferramentas virar uma coluna de cima para baixo */
+  .produtos-toolbar {
+    flex-direction: column;
+    align-items: stretch; 
+    gap: 12px;
+  }
+
+  /* Faz o grupo de filtros ocupar a largura total */
+  .produtos-filter-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .produtos-input,
+  .produtos-filter-group .produtos-select {
+    width: 100%;
+  }
+
+  /* Permite que a tabela role para os lados no celular sem quebrar o app */
+  .produtos-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Rolagem mais suave no iOS */
+  }
+
+  .produtos-th, .produtos-td {
+    padding: 12px 14px; /* Ajuste sutil de espaçamento */
+    font-size: 13px;
+  }
+
+  /* --- O TRUQUE PARA ALINHAR OS BOTÕES NO CELULAR --- */
+  .text-right {
+    text-align: right;
+    white-space: nowrap; /* IMPEDE que um botão pule para a linha de baixo */
+  }
+
+  .produtos-btn-editar, .produtos-btn-excluir {
+    padding: 8px 12px;   /* Deixa o botão ligeiramente maior para o toque do dedo */
+    font-size: 13px;     /* Texto legível no mobile */
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .produtos-btn-editar {
+    margin-right: 6px;   /* Garante um espaçamento fixo e controlado entre os dois */
+  }
+
+  /* Faz com que os campos de Custo e Medida fiquem um embaixo do outro no modal */
+  .produtos-form-group-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Reduz o padding do modal para sobrar mais espaço */
+  .produtos-modal-content {
+    padding: 20px 16px;
+  }
 }
