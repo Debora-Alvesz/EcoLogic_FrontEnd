@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/side-bar.css';
 import { useSideBar } from '../hooks/SideBar';
 
-const SideBar = () => {
+const SideBar = ({ isMobileMenuOpen, closeMobileMenu }) => {
   // Inicializando com o Dashboard selecionado
   const { activeTab, handleTabChange } = useSideBar('Dashboard');
 
@@ -59,28 +59,46 @@ const SideBar = () => {
   ];
 
   return (
-    <aside className="sidebar-container">
-      {/* Menu de Navegação - Deixando apenas da parte de operações para baixo */}
-      <nav className="sidebar-menu">
-        <span className="sidebar-section-title">Operações</span>
+    <>
+      {/* Overlay escuro que aparece em telas pequenas quando o menu está aberto */}
+      {isMobileMenuOpen && (
+        <div className="sidebar-overlay" onClick={closeMobileMenu}></div>
+      )}
 
-        {menuItems.map((item) => (
-          <button
-            key={item.id}
-            className={`sidebar-item ${activeTab === item.id ? 'active' : ''}`}
-            onClick={() => handleTabChange(item.id)}
-          >
-            <div className="sidebar-item-content">
-              {item.icon}
-              <span className="sidebar-item-text">{item.label}</span>
-            </div>
-            
-            {/* Indicador de aba ativa (bolinha do lado direito) */}
-            {activeTab === item.id && <div className="sidebar-active-dot" />}
+      <aside className={`sidebar-container ${isMobileMenuOpen ? 'open' : ''}`}>
+        
+        {/* Botão de Fechar Menu (Aparece só no mobile) */}
+        <div className="sidebar-mobile-header">
+          <button className="sidebar-close-btn" onClick={closeMobileMenu} aria-label="Fechar Menu">
+            <svg viewBox="0 0 24 24" width="24" height="24">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </button>
-        ))}
-      </nav>
-    </aside>
+        </div>
+
+        {/* Menu de Navegação - Deixando apenas da parte de operações para baixo */}
+        <nav className="sidebar-menu">
+          <span className="sidebar-section-title">Operações</span>
+
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              className={`sidebar-item ${activeTab === item.id ? 'active' : ''}`}
+              onClick={() => handleTabChange(item.id)}
+            >
+              <div className="sidebar-item-content">
+                {item.icon}
+                <span className="sidebar-item-text">{item.label}</span>
+              </div>
+              
+              {/* Indicador de aba ativa (bolinha do lado direito) */}
+              {activeTab === item.id && <div className="sidebar-active-dot" />}
+            </button>
+          ))}
+        </nav>
+      </aside>
+    </>
   );
 };
 

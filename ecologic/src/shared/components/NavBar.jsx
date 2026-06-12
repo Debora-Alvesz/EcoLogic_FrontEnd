@@ -2,7 +2,7 @@ import React from 'react';
 import useNavbar from '../hooks/useNavBar';
 import '../styles/nav-bar.css';
 
-const NavBar = ({ currentPage, onNavigate }) => {
+const NavBar = ({ currentPage, onNavigate, toggleMobileMenu }) => {
   const { usuario } = useNavbar();
 
   // Define títulos e legendas com base na página ativa
@@ -32,6 +32,16 @@ const NavBar = ({ currentPage, onNavigate }) => {
     <header className="navbar-container">
       {/* Esquerda: Branding & Título da Página */}
       <div className="navbar-brand-section">
+        
+        {/* Hamburger Menu (Visível apenas no mobile) */}
+        <button className="navbar-mobile-menu-btn" onClick={toggleMobileMenu} aria-label="Abrir Menu">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
         <div className="navbar-brand-wrapper" onClick={() => onNavigate('dashboard')}>
           <div className="navbar-logo">
             <svg viewBox="0 0 24 24" role="presentation">

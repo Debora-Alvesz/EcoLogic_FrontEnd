@@ -9,52 +9,8 @@
   font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
   box-sizing: border-box;
   overflow-y: auto;
-}
-
-/* Área da Logo (Opcional, conforme o topo do print) */
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 72px;
-  padding: 0 24px;
-  border-bottom: 1px solid #d5dde7;
-}
-
-.sidebar-logo {
-  width: 36px;
-  height: 36px;
-  background-color: #0499df;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 8px rgba(4, 153, 223, 0.2);
-}
-
-.sidebar-logo svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: #ffffff;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.sidebar-brand-text strong {
-  display: block;
-  color: #002b55;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.sidebar-brand-text small {
-  display: block;
-  color: #59677d;
-  font-size: 11px;
-  font-weight: 500;
+  transition: transform 0.3s ease;
+  z-index: 100;
 }
 
 /* Área de Navegação */
@@ -139,4 +95,69 @@
   height: 6px;
   background-color: #0499df;
   border-radius: 50%;
+}
+
+/* Mobile Header (Oculto no Desktop) */
+.sidebar-mobile-header {
+  display: none;
+}
+
+/* Responsividade para Celulares e Tablets */
+@media (max-width: 768px) {
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh; /* No mobile a drawer toma toda a altura */
+    transform: translateX(-100%);
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar-container.open {
+    transform: translateX(0);
+  }
+
+  /* Overlay Escuro */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 43, 85, 0.5);
+    z-index: 90;
+    backdrop-filter: blur(2px);
+  }
+
+  /* Header com botão fechar no mobile */
+  .sidebar-mobile-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+    border-bottom: 1px solid #d5dde7;
+  }
+
+  .sidebar-close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    color: #002b55;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+  }
+
+  .sidebar-close-btn:hover {
+    background-color: #f1f5f9;
+  }
+
+  .sidebar-close-btn svg {
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 }

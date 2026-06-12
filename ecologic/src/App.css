@@ -24,3 +24,10 @@
   box-sizing: border-box;
   overflow-y: auto;
 }
+
+/* Responsividade Mobile: a SideBar fica flutuante, então o container volta a ser coluna */
+@media (max-width: 768px) {
+  .app-container.with-sidebar {
+    flex-direction: column;
+  }
+}

@@ -244,6 +244,29 @@
   transform: scale(1.05);
 }
 
+/* Botão de Menu Mobile oculto por padrão */
+.navbar-mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  color: #002b55;
+}
+
+.navbar-mobile-menu-btn:hover {
+  background-color: #f1f5f9;
+}
+
+.navbar-mobile-menu-btn svg {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* Responsividade */
 @media (max-width: 900px) {
   .navbar-search-container {
@@ -253,29 +276,77 @@
 
 @media (max-width: 768px) {
   .navbar-container {
-    height: auto;
-    flex-direction: column;
-    padding: 16px;
-    gap: 14px;
-    align-items: stretch;
+    height: 72px;
+    flex-direction: row;
+    padding: 0 16px;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .navbar-brand-section {
-    justify-content: space-between;
-    height: auto;
+    justify-content: flex-start;
+    gap: 12px;
+    height: 100%;
+  }
+
+  .navbar-mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Esconde o texto da logo no mobile */
+  .navbar-brand-text {
+    display: none;
   }
 
   .navbar-divider {
     display: none;
   }
 
+  /* Oculta o título da página no mobile para economizar espaço */
+  .navbar-page-title-section {
+    display: none; 
+  }
+
   .navbar-actions-section {
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  /* Esconde o texto do perfil (nome e cargo) */
+  .navbar-profile-info {
+    display: none;
+  }
+
+  /* Transforma a barra de pesquisa apenas no ícone */
+  .navbar-search-input {
+    display: none;
   }
 
   .navbar-search-container {
-    flex-grow: 1;
-    width: auto;
+    width: 36px;
+    height: 36px;
+    flex-grow: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    background: transparent;
+    transition: background-color 0.2s;
+  }
+
+  .navbar-search-container:hover {
+    background-color: #f1f5f9;
+  }
+
+  .navbar-search-container svg {
+    position: static;
+    transform: none;
+    width: 20px;
+    height: 20px;
+    stroke: #002b55;
   }
 }
