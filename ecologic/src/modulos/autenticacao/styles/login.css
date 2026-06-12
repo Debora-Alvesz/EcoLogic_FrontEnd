@@ -257,9 +257,7 @@
   }
 
   .login-brand-panel {
-    gap: 42px;
-    border-right: 0;
-    border-bottom: 1px solid #d5dde7;
+    display: none;
   }
 
   .login-brand-panel,

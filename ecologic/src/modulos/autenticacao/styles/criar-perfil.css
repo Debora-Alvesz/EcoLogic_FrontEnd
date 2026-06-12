@@ -248,9 +248,7 @@
   }
 
   .criar-perfil-sidebar {
-    border-right: 0;
-    border-bottom: 1px solid #d5dde7;
-    padding: 28px 20px;
+    display: none;
   }
 
   .criar-perfil-card {
