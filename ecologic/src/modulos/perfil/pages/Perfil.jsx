@@ -50,24 +50,6 @@ const Perfil = ({ onNavigate }) => {
     <div className="perfil-page">
       <div className="perfil-shell">
         
-        {/* Barra lateral */}
-        <div className="perfil-sidebar">
-          <div className="perfil-copy" style={{ marginTop: '20px' }}>
-            <span className="perfil-eyebrow">Área do Usuário</span>
-            <h1>Olá, {usuario.nome}.</h1>
-            <p>Aqui está o panorama das informações cadastradas no seu perfil.</p>
-          </div>
-
-          <button className="perfil-logout-btn" onClick={handleLogout}>
-            <svg viewBox="0 0 24 24">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-              <polyline points="16 17 21 12 16 7"></polyline>
-              <line x1="21" y1="12" x2="9" y2="12"></line>
-            </svg>
-            Sair da Conta
-          </button>
-        </div>
-
         {/* Conteúdo Principal do Perfil */}
         <div className="perfil-card">
           <div className="perfil-header">
@@ -102,6 +84,16 @@ const Perfil = ({ onNavigate }) => {
               <span>Membro Desde</span>
               <strong>{formatarData(usuario.dataCriacao)}</strong>
             </div>
+            
+            {/* Botão de Logout realocado para dentro do card */}
+            <button className="perfil-logout-btn" onClick={handleLogout}>
+              <svg viewBox="0 0 24 24">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Sair da Conta
+            </button>
           </div>
         </div>
 

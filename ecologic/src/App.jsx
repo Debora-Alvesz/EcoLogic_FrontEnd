@@ -18,6 +18,7 @@ const getInitialPage = () => {
 
 function App() {
   const [currentPage, setCurrentPage] = useState(getInitialPage)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const handleNavigate = (page) => {
     setCurrentPage(page)
@@ -26,22 +27,39 @@ function App() {
     window.history.pushState({}, '', newPath)
   }
 
+  // Fecha o menu mobile sempre que navegar
+  const handleNavigateWithMenu = (page) => {
+    setIsMobileMenuOpen(false)
+    handleNavigate(page)
+  }
+
   // Verifica se a página atual deve exibir barra superior e barra lateral
   const showNavBar = currentPage === 'dashboard' || currentPage === 'perfil'
   const showSideBar = showNavBar
 
   return (
     <>
-      {showNavBar && <NavBar currentPage={currentPage} onNavigate={handleNavigate} />}
+      {showNavBar && (
+        <NavBar 
+          currentPage={currentPage} 
+          onNavigate={handleNavigateWithMenu}
+          toggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        />
+      )}
 
       <div className={`app-container ${showSideBar ? 'with-sidebar' : 'full-width'}`}>
-        {showSideBar && <SideBar />}
+        {showSideBar && (
+          <SideBar 
+            isMobileMenuOpen={isMobileMenuOpen}
+            closeMobileMenu={() => setIsMobileMenuOpen(false)}
+          />
+        )}
 
         <main className="app-content">
-          {currentPage === 'dashboard' && <Dashboard onNavigate={handleNavigate} />}
-          {currentPage === 'login' && <Login onNavigate={handleNavigate} />}
-          {currentPage === 'criar-perfil' && <CriarPerfil onNavigate={handleNavigate} />}
-          {currentPage === 'perfil' && <Perfil onNavigate={handleNavigate} />}
+          {currentPage === 'dashboard' && <Dashboard onNavigate={handleNavigateWithMenu} />}
+          {currentPage === 'login' && <Login onNavigate={handleNavigateWithMenu} />}
+          {currentPage === 'criar-perfil' && <CriarPerfil onNavigate={handleNavigateWithMenu} />}
+          {currentPage === 'perfil' && <Perfil onNavigate={handleNavigateWithMenu} />}
         </main>
       </div>
     </>
