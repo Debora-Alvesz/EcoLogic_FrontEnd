@@ -1,6 +1,6 @@
 import React from 'react';
-import useNavbar from '../hook/useNavbar';
-import '../styles/NavBar.css';
+import useNavbar from '../hooks/useNavBar';
+import '../styles/nav-bar.css';
 
 const NavBar = ({ currentPage, onNavigate }) => {
   const { usuario } = useNavbar();

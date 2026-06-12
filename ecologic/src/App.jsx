@@ -5,6 +5,7 @@ import Login from './modulos/autenticacao/pages/Login'
 import CriarPerfil from './modulos/autenticacao/pages/CriarPerfil'
 import Perfil from './modulos/perfil/pages/Perfil'
 import NavBar from './shared/components/NavBar'
+import SideBar from './shared/components/SideBar'
 
 // Função para identificar a rota inicial a partir da URL
 const getInitialPage = () => {
@@ -25,16 +26,24 @@ function App() {
     window.history.pushState({}, '', newPath)
   }
 
-  // Verifica se a página atual deve exibir a barra de navegação superior
+  // Verifica se a página atual deve exibir barra superior e barra lateral
   const showNavBar = currentPage === 'dashboard' || currentPage === 'perfil'
+  const showSideBar = showNavBar
 
   return (
     <>
       {showNavBar && <NavBar currentPage={currentPage} onNavigate={handleNavigate} />}
-      {currentPage === 'dashboard' && <Dashboard onNavigate={handleNavigate} />}
-      {currentPage === 'login' && <Login onNavigate={handleNavigate} />}
-      {currentPage === 'criar-perfil' && <CriarPerfil onNavigate={handleNavigate} />}
-      {currentPage === 'perfil' && <Perfil onNavigate={handleNavigate} />}
+
+      <div className={`app-container ${showSideBar ? 'with-sidebar' : 'full-width'}`}>
+        {showSideBar && <SideBar />}
+
+        <main className="app-content">
+          {currentPage === 'dashboard' && <Dashboard onNavigate={handleNavigate} />}
+          {currentPage === 'login' && <Login onNavigate={handleNavigate} />}
+          {currentPage === 'criar-perfil' && <CriarPerfil onNavigate={handleNavigate} />}
+          {currentPage === 'perfil' && <Perfil onNavigate={handleNavigate} />}
+        </main>
+      </div>
     </>
   )
 }

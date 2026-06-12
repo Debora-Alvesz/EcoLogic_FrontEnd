@@ -1,0 +1,142 @@
+/* Container principal da Sidebar */
+.sidebar-container {
+  width: 260px;
+  height: calc(100vh - 72px);
+  background-color: #ffffff;
+  border-right: 1px solid #d5dde7;
+  display: flex;
+  flex-direction: column;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Área da Logo (Opcional, conforme o topo do print) */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 72px;
+  padding: 0 24px;
+  border-bottom: 1px solid #d5dde7;
+}
+
+.sidebar-logo {
+  width: 36px;
+  height: 36px;
+  background-color: #0499df;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(4, 153, 223, 0.2);
+}
+
+.sidebar-logo svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sidebar-brand-text strong {
+  display: block;
+  color: #002b55;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.sidebar-brand-text small {
+  display: block;
+  color: #59677d;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Área de Navegação */
+.sidebar-menu {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #59677d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  padding-left: 12px;
+}
+
+/* Itens do Menu */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #59677d;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+
+.sidebar-item-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-item-icon {
+  width: 20px;
+  height: 20px;
+  stroke: #59677d;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.2s ease;
+}
+
+.sidebar-item-text {
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+/* Estados de Hover e Ativo */
+.sidebar-item:hover {
+  background-color: #f1f5f9;
+}
+
+.sidebar-item.active {
+  background-color: #e0f2fe;
+}
+
+.sidebar-item.active .sidebar-item-text {
+  color: #002b55;
+  font-weight: 600;
+}
+
+.sidebar-item.active .sidebar-item-icon {
+  stroke: #0499df;
+}
+
+/* Pontinho azul indicador do item ativo */
+.sidebar-active-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #0499df;
+  border-radius: 50%;
+}
