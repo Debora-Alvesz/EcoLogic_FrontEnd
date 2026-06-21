@@ -93,6 +93,7 @@ const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu })
                 // Redireciona apenas se for uma das telas que já criamos no App.jsx
                 if (item.id === 'Produtos') onNavigate('produtos');
                 if (item.id === 'Dashboard') onNavigate('dashboard');
+                if (item.id === 'Setores') onNavigate('setores');
               }}
             >
               <div className="sidebar-item-content">

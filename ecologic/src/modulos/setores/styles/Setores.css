@@ -1,0 +1,173 @@
+/* Container que envolve a tabela */
+.container-tabela {
+  background: #ffffff;
+  border: 1px solid #eaecf0;
+  border-radius: 12px;
+  margin-top: 25px;
+  overflow: hidden;
+  box-shadow: 0px 2px 8px rgba(16, 24, 40, 0.06);
+  width: 100%;
+}
+
+/* Forçar a tabela a ocupar a largura total e resetar estilos do navegador */
+.tabela-dados {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+  background-color: #ffffff;
+}
+
+/* Estilização do Cabeçalho da Tabela */
+.tabela-dados th {
+  background-color: #f9fafb !important; /* Força o fundo cinza claro */
+  color: #475467;
+  font-weight: 600;
+  padding: 16px 24px;
+  border-bottom: 1px solid #eaecf0;
+}
+
+/* Estilização das Linhas de Dados */
+.tabela-dados td {
+  padding: 20px 24px;
+  color: #333333;
+  border-bottom: 1px solid #eaecf0;
+  vertical-align: middle;
+}
+
+/* Alinhamento da última coluna */
+.coluna-acoes {
+  text-align: right !important;
+}
+
+/* Container dos botões para ficarem lado a lado e não empilhados */
+.acoes-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Botões de Ação */
+.btn-editar, .btn-excluir {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-editar {
+  color: #0066cc;
+}
+
+.btn-editar:hover {
+  background-color: #f0f7ff;
+}
+
+.btn-excluir {
+  color: #d92d20;
+}
+
+.btn-excluir:hover {
+  background-color: #fef3f2;
+}
+
+.btn-adicionar {
+    background: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    height: 36px;
+    padding: 0px 20px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-adicionar:hover {
+    background: #0b5ed7;
+}
+
+.btn-adicionar:active {
+    transform: translateY(0);
+}
+
+.mensagem-erro {
+    display: flex;
+    justify-content: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    text-align: center;
+    background-color: #fafafa;
+}
+
+.mensagem-erro h3{
+    margin: 15px 0 8px;
+    color: #344054;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.mensagem-erro p{
+    color: #667085;
+    font-size: 14px;
+    max-width: 400px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.icone-vazio {
+    font-size: 60px;
+    opacity: 0.6;
+}
+
+.input-busca {
+    width: 260px;
+    height: 38px;
+    padding: 0px 14px;
+    border: 1px solid #d0d5dd;
+    background: #fff;
+    border-radius: px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    color: #344054;
+}
+
+.input-busca::placeholder {
+    color: #667085;
+}
+
+.input-busca:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 3px rgba(21, 112, 239, 0.1);
+}
+
+.mensagem-vazia{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:80px 20px;
+    text-align:center;
+}
+
+.icone-vazio{
+    font-size:60px;
+    margin-bottom:10px;
+}
+
+.mensagem-vazia h3{
+    color:#344054;
+    margin-bottom:8px;
+}
+
+.mensagem-vazia p{
+    color:#667085;
+    max-width:400px;
+}

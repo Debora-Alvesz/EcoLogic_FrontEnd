@@ -7,6 +7,7 @@ import Perfil from './modulos/perfil/pages/Perfil'
 import Produtos from './modulos/Produtos/pages/Produtos'
 import NavBar from './shared/components/NavBar'
 import SideBar from './shared/components/SideBar'
+import Setores from './modulos/setores/pages/Setores'
 
 
 // Função para identificar a rota inicial a partir da URL
@@ -16,6 +17,7 @@ const getInitialPage = () => {
   if (path === '/perfil') return 'perfil'
   if (path === '/criar-perfil') return 'criar-perfil'
   if (path === '/produtos') return 'produtos'
+  if (path === '/setores') return 'setores'
   return 'login' // Login é a tela padrão inicial
 }
 
@@ -37,7 +39,7 @@ function App() {
   }
 
   // Verifica se a página atual deve exibir barra superior e barra lateral
-  const showNavBar = currentPage === 'dashboard' || currentPage === 'perfil' || currentPage === 'produtos'
+  const showNavBar = currentPage === 'dashboard' || currentPage === 'perfil' || currentPage === 'produtos' || currentPage === 'setores'
   const showSideBar = showNavBar
 
   return (
@@ -66,6 +68,7 @@ function App() {
           {currentPage === 'criar-perfil' && <CriarPerfil onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'perfil' && <Perfil onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'produtos' && <Produtos onNavigate={handleNavigateWithMenu} />}
+          {currentPage === 'setores' && <Setores onNavigate={handleNavigateWithMenu} />}
         </main>
       </div>
     </>
