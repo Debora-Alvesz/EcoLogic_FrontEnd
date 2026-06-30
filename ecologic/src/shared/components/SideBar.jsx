@@ -94,6 +94,7 @@ const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu })
                 if (item.id === 'Produtos') onNavigate('produtos');
                 if (item.id === 'Dashboard') onNavigate('dashboard');
                 if (item.id === 'Setores') onNavigate('setores');
+                if (item.id === 'Relatorios') onNavigate('relatorios');
               }}
             >
               <div className="sidebar-item-content">

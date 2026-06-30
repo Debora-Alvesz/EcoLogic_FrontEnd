@@ -1,0 +1,316 @@
+/* --- LAYOUT GERAL --- */
+.relatorios-container {
+  padding: 24px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- HEADER --- */
+.relatorios-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.relatorios-header h1 {
+  font-size: 28px;
+  color: #1f3b73;
+  margin: 0 0 8px 0;
+}
+
+.relatorios-header p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 15px;
+}
+
+/* --- CARD DE ESTADO VAZIO (Centralizado) --- */
+.relatorios-card {
+  background: #ffffff;
+  padding: 60px 40px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px dashed #d1d5db;
+  max-width: 600px;
+  margin: 40px auto 0 auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.relatorios-card h2 {
+  font-size: 22px;
+  color: #1f3b73;
+  margin: 0 0 12px 0;
+}
+
+.relatorios-card p {
+  color: #6b7280;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* --- LISTA DE BLOQUINHOS (CARDS ATIVOS) --- */
+.relatorios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 24px 0;
+}
+
+/* Bloquinho Azul Claro */
+.relatorio-item {
+  background-color: #f4f8ff;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px -1px rgba(31, 59, 115, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.relatorio-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(31, 59, 115, 0.08);
+  border-color: #bfdbfe;
+}
+
+/* Topo Interno do Card */
+.relatorio-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.relatorio-info h3 {
+  font-size: 18px;
+  color: #1f3b73;
+  margin: 0;
+  font-weight: 600;
+}
+
+.relatorio-topo-direita {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Corpo Interno do Card */
+.relatorio-detalhes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.relatorio-detalhes p {
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.relatorio-detalhes strong {
+  color: #1f3b73;
+  font-weight: 600;
+}
+
+/* --- BADGES / TAGS --- */
+.tag {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.tag.geral {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.tag.por_setor, .tag.setor {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+/* --- BOTÕES --- */
+.btn-gerar {
+  background-color: #1f3b73;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-gerar:hover {
+  background-color: #152952;
+}
+
+.btn-visualizar {
+  background-color: #1f3b73;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-visualizar:hover {
+  background-color: #152952;
+}
+
+/* --- MODAIS DE SOBREPOSIÇÃO (OVERLAYS) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal.modal-largo {
+  max-width: 750px; /* Expandido para a tabela caber folgada */
+}
+
+.modal h2 {
+  margin: 0 0 20px 0;
+  color: #1f3b73;
+  font-size: 22px;
+}
+
+/* Elementos de Formulário dentro do Modal */
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal input, .modal select {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal input:focus, .modal select:focus {
+  border-color: #1f3b73;
+}
+
+.datas-group {
+  display: flex;
+  gap: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-cancelar {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-cancelar:hover {
+  background-color: #e5e7eb;
+}
+
+.btn-confirmar {
+  background-color: #1f3b73;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* --- TABELA DE CONSUMO DENTRO DO DETALHES --- */
+.modal-detalhes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.meta-dados-detalhes {
+  background: #f3f4f6;
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.meta-dados-detalhes p {
+  margin: 6px 0;
+}
+
+.tabela-consumo-container h3 {
+  color: #1f3b73;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.tabela-consumo {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.tabela-consumo th {
+  background-color: #e2e8f0;
+  color: #1f3b73;
+  padding: 12px 10px;
+  font-weight: 600;
+}
+
+.tabela-consumo td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #4b5563;
+}
+
+.tabela-consumo tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.loading-text {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 20px 0;
+}
