@@ -1,8 +1,18 @@
+import { useEffect } from 'react';
 import usePerfil from '../hooks/usePerfil';
 import '../styles/perfil.css';
+import { useAuth } from '../../../shared/contexts/AuthContext';
 
 const Perfil = ({ onNavigate }) => {
   const { usuario, loading, error } = usePerfil();
+  const { setUserRole, clearAuth, isAdmin, isDiretor } = useAuth();
+
+  // Quando o usuário for carregado, alimentamos o estado global
+  useEffect(() => {
+    if (usuario?.tipo) {
+      setUserRole(usuario.tipo);
+    }
+  }, [usuario, setUserRole]);
 
   const formatarData = (dataString) => {
     if (!dataString) return '-';
@@ -15,6 +25,7 @@ const Perfil = ({ onNavigate }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    clearAuth(); // Limpa o estado global ao deslogar
     if (onNavigate) {
       onNavigate('login');
     } else {
@@ -71,7 +82,9 @@ const Perfil = ({ onNavigate }) => {
             <div className="perfil-grid">
               <div className="perfil-info-box">
                 <span>Tipo de Perfil</span>
-                <strong>{usuario.tipo}</strong>
+                <strong>
+                  {isAdmin ? '🛡️ Administrador' : isDiretor ? '🎓 Diretor' : usuario.tipo}
+                </strong>
               </div>
 
               <div className="perfil-info-box">
