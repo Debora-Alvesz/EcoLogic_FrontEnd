@@ -8,6 +8,7 @@ import Produtos from './modulos/Produtos/pages/Produtos'
 import NavBar from './shared/components/NavBar'
 import SideBar from './shared/components/SideBar'
 import Setores from './modulos/setores/pages/Setores'
+import SetoresAdm from './modulos/setores/pages/SetoresAdm'
 import Relatorios from './modulos/relatorios/pages/Relatorios'
 
 
@@ -20,6 +21,7 @@ const getInitialPage = () => {
   if (path === '/produtos') return 'produtos'
   if (path === '/setores') return 'setores'
   if (path === '/relatorios') return 'relatorios'
+  if (path === '/setores-adm') return 'setores-adm'
   return 'login' // Login é a tela padrão inicial
 }
 
@@ -46,6 +48,7 @@ function App() {
   currentPage === 'perfil' || 
   currentPage === 'produtos' || 
   currentPage === 'setores' ||
+  currentPage === 'setores-adm' ||
   currentPage === 'relatorios'
   const showSideBar = showNavBar
 
@@ -76,6 +79,7 @@ function App() {
           {currentPage === 'perfil' && <Perfil onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'produtos' && <Produtos onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'setores' && <Setores onNavigate={handleNavigateWithMenu} />}
+          {currentPage === 'setores-adm' && <SetoresAdm onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'relatorios' && <Relatorios />}
         </main>
       </div>

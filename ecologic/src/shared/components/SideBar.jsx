@@ -1,10 +1,12 @@
 import React from 'react';
 import '../styles/side-bar.css';
 import { useSideBar } from '../hooks/SideBar';
+import { useAuth } from '../contexts/AuthContext';
 
 const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu }) => {
   // Inicializando com o Dashboard selecionado
   const { activeTab, handleTabChange } = useSideBar('Dashboard');
+  const { isAdmin } = useAuth();
 
   // Definição das opções requisitadas (Dashboard, Setores, Produtos, Relatórios)
   const menuItems = [
@@ -93,7 +95,9 @@ const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu })
                 // Redireciona apenas se for uma das telas que já criamos no App.jsx
                 if (item.id === 'Produtos') onNavigate('produtos');
                 if (item.id === 'Dashboard') onNavigate('dashboard');
-                if (item.id === 'Setores') onNavigate('setores');
+                if (item.id === 'Setores') {
+                  onNavigate(isAdmin ? 'setores-adm' : 'setores');
+                }
                 if (item.id === 'Relatorios') onNavigate('relatorios');
               }}
             >

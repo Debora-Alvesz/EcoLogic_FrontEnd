@@ -1,0 +1,129 @@
+/* Container Geral da Visão do Admin */
+.container-adm {
+  margin-top: 25px;
+  width: 100%;
+}
+
+/* Card Exclusivo do Setor Vinculado */
+.card-setor-vinculado {
+  background: #ffffff;
+  border: 1px solid #eaecf0;
+  border-radius: 12px;
+  box-shadow: 0px 2px 8px rgba(16, 24, 40, 0.06);
+  overflow: hidden;
+}
+
+/* Topo do Card */
+.card-header-setor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid #eaecf0;
+  background-color: #f9fafb;
+}
+
+.info-principal h3 {
+  color: #101828;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 6px 0 4px 0;
+}
+
+.info-principal p {
+  color: #475467;
+  font-size: 14px;
+}
+
+/* Badge de Status do Vínculo */
+.badge-status {
+  display: inline-block;
+  background-color: #ecfdf3;
+  color: #027a48;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 16px;
+}
+
+/* Botão de Ação do Admin */
+.btn-visualizar {
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 40px;
+  padding: 0px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-visualizar:hover {
+  background: #0b5ed7;
+}
+
+/* Corpo inferior do Card com métricas/detalhes */
+.card-body-setor {
+  display: flex;
+  gap: 40px;
+  padding: 24px;
+  background-color: #ffffff;
+}
+
+.info-metrica {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metrica-label {
+  font-size: 12px;
+  color: #667085;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metrica-valor {
+  font-size: 16px;
+  color: #344054;
+  font-weight: 600;
+}
+
+.tag-admin {
+  color: #0d6efd;
+}
+
+/* Estado Vazio para o Admin */
+.mensagem-vazia-adm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #eaecf0;
+  border-radius: 12px;
+}
+
+.icone-vazio-adm {
+  font-size: 60px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.mensagem-vazia-adm h3 {
+  color: #344054;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.mensagem-vazia-adm p {
+  color: #667085;
+  font-size: 14px;
+  max-width: 440px;
+  line-height: 1.5;
+}

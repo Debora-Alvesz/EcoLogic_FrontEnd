@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { getUserRoleFromToken, useAuth } from '../../../shared/contexts/AuthContext'
 
 const LOGIN_URL = 'http://localhost:8080/api/auth/login'
 
@@ -6,6 +7,7 @@ export function useLogin() {
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState('')
   const [token, setToken] = useState(() => localStorage.getItem('token') || '')
+  const { setUserRole } = useAuth()
 
   const login = async (email, senha) => {
     setLoading(true)
@@ -32,6 +34,11 @@ export function useLogin() {
       }
 
       localStorage.setItem('token', data.token)
+      const roleFromToken = getUserRoleFromToken(data.token)
+      if (roleFromToken) {
+        localStorage.setItem('userRole', roleFromToken)
+        setUserRole(roleFromToken)
+      }
       setToken(data.token)
 
       return data.token

@@ -1,3 +1,7 @@
+/* ==========================================
+   CONTAINER E ESTRUTURA DA TABELA
+   ========================================== */
+
 /* Container que envolve a tabela */
 .container-tabela {
   background: #ffffff;
@@ -47,7 +51,12 @@
   gap: 12px;
 }
 
-/* Botões de Ação */
+
+/* ==========================================
+   BOTÕES GERAIS E INPUTS
+   ========================================== */
+
+/* Botões de Ação na Tabela */
 .btn-editar, .btn-excluir {
   background: none;
   border: none;
@@ -75,99 +84,246 @@
   background-color: #fef3f2;
 }
 
+/* Botão Adicionar Setor */
 .btn-adicionar {
-    background: #0d6efd;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    height: 36px;
-    padding: 0px 20px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.2s;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 38px;
+  padding: 0px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .btn-adicionar:hover {
-    background: #0b5ed7;
+  background: #0b5ed7;
 }
 
-.btn-adicionar:active {
-    transform: translateY(0);
-}
-
-.mensagem-erro {
-    display: flex;
-    justify-content: column;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 20px;
-    text-align: center;
-    background-color: #fafafa;
-}
-
-.mensagem-erro h3{
-    margin: 15px 0 8px;
-    color: #344054;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.mensagem-erro p{
-    color: #667085;
-    font-size: 14px;
-    max-width: 400px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.icone-vazio {
-    font-size: 60px;
-    opacity: 0.6;
-}
-
+/* Input de busca corrigido */
 .input-busca {
-    width: 260px;
-    height: 38px;
-    padding: 0px 14px;
-    border: 1px solid #d0d5dd;
-    background: #fff;
-    border-radius: px;
-    font-size: 14px;
-    transition: all 0.2s ease;
-    color: #344054;
+  width: 260px;
+  height: 38px;
+  padding: 0px 14px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  border-radius: 8px; /* Corrigido de px para 8px */
+  font-size: 14px;
+  transition: all 0.2s ease;
+  color: #344054;
 }
 
 .input-busca::placeholder {
-    color: #667085;
+  color: #667085;
 }
 
 .input-busca:focus {
-    outline: none;
-    border-color: #0066cc;
-    box-shadow: 0 0 0 3px rgba(21, 112, 239, 0.1);
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(21, 112, 239, 0.1);
 }
 
-.mensagem-vazia{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:80px 20px;
-    text-align:center;
+
+/* ==========================================
+   ESTADOS VAZIOS E MENSAGENS
+   ========================================== */
+
+/* Mensagem de Erro corrigida */
+.mensagem-erro {
+  display: flex;
+  flex-direction: column; /* Corrigido de justify-content: column */
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background-color: #fafafa;
 }
 
-.icone-vazio{
-    font-size:60px;
-    margin-bottom:10px;
+.mensagem-erro h3 {
+  margin: 15px 0 8px;
+  color: #344054;
+  font-size: 20px;
+  font-weight: 600;
 }
 
-.mensagem-vazia h3{
-    color:#344054;
-    margin-bottom:8px;
+.mensagem-erro p {
+  color: #667085;
+  font-size: 14px;
+  max-width: 400px;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
 
-.mensagem-vazia p{
-    color:#667085;
-    max-width:400px;
+/* Mensagem de Lista Vazia */
+.mensagem-vazia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.icone-vazio {
+  font-size: 60px;
+  margin-bottom: 10px;
+  opacity: 0.6;
+}
+
+.mensagem-vazia h3 {
+  color: #344054;
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.mensagem-vazia p {
+  color: #667085;
+  max-width: 400px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.loading-texto {
+  text-align: center;
+  color: #667085;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+
+/* ==========================================
+   MODAL DE CADASTRO / EDIÇÃO (NOVOS ESTILOS)
+   ========================================== */
+
+/* Fundo escurecido atrás do modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(16, 24, 40, 0.4); /* Backdrop levemente escuro */
+  backdrop-filter: blur(4px); /* Efeito desfoque moderno */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Caixa branca do Modal */
+.modal-content {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+  animation: fadeUp 0.2s ease-out;
+}
+
+.modal-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #101828;
+  margin-bottom: 20px;
+}
+
+/* Agrupamento de labels e campos */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #344054;
+}
+
+/* Estilização padrão dos inputs internos do Modal */
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #101828;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(21, 112, 239, 0.1);
+}
+
+/* Container dos botões do Modal */
+.modal-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Botões internos do Modal */
+.btn-cancelar {
+  background: #ffffff;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #344054;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancelar:hover {
+  background: #f9fafb;
+}
+
+.btn-salvar {
+  background: #0d6efd;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-salvar:hover {
+  background: #0b5ed7;
+}
+
+/* Animação suave de entrada para o Modal */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
