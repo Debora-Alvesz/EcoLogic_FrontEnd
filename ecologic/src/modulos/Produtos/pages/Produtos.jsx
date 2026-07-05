@@ -1,48 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import '../styles/produto.css'; // 1. Importa o arquivo de estilos CSS externo
+import { useProdutos } from '../hooks/useProdutos';
 
 export default function Produtos() {
   // --- ESTADOS DA APLICAÇÃO ---
-  const [produtos, setProdutos] = useState([]);
-  const [termoBusca, setTermoBusca] = useState('');
-  const [categoriaFiltro, setCategoriaFiltro] = useState('TODAS');
-  const [carregando, setCarregando] = useState(true);
-  const [erro, setErro] = useState(null);
+  const {
+    produtos,
+    loading: carregando,
+    erro,
+    isModalAberto,
+    modoModal,
+    formProduto,
+    setFormProduto,
+    abrirModalCadastro,
+    abrirModalEdicao,
+    fecharModal,
+    handleSalvarProduto,
+    handleExcluirProduto,
+  } = useProdutos();
+  const [termoBusca, setTermoBusca] = React.useState('');
+  const [categoriaFiltro, setCategoriaFiltro] = React.useState('TODAS');
 
-  // --- ESTADOS DO MODAL (CADASTRAR / EDITAR) ---
-  const [isModalAberto, setIsModalAberto] = useState(false);
-  const [modoModal, setModoModal] = useState('cadastrar'); 
-
-  // Ajustado com os campos reais do seu JSON (custoUnitario e unidadeDeMedida)
-  const [formProduto, setFormProduto] = useState({ 
-    id: null, 
-    nome: '', 
-    categoria: 'ALIMENTO', 
-    custoUnitario: '', 
-    unidadeDeMedida: '' 
-  });
-
-  const API_URL = 'http://localhost:8080/produtos'; 
-
-  // --- FUNÇÃO: BUSCAR PRODUTOS DO BACK-END ---
-  const buscarProdutos = async () => {
-    try {
-      setCarregando(true);
-      const resposta = await fetch(API_URL);
-      if (!resposta.ok) throw new Error('Erro ao carregar lista de produtos.');
-      
-      const dados = await resposta.json();
-      setProdutos(dados);
-    } catch (err) {
-      setErro(err.message);
-    } finally {
-      setCarregando(false);
-    }
-  };
-
-  useEffect(() => {
-    buscarProdutos();
-  }, []);
+  // O hook `useProdutos` já carrega a lista ao montar
 
   // --- FUNÇÃO: RETORNA AS CORES DO ENUM DO JAVA ---
   const getEstiloBadge = (categoria) => {
@@ -58,66 +37,10 @@ export default function Produtos() {
   };
 
   // --- FUNÇÃO: ABRIR MODAL PARA NOVO PRODUTO ---
-  const abrirModalCadastro = () => {
-    setModoModal('cadastrar');
-    setFormProduto({ id: null, nome: '', categoria: 'ALIMENTO', custoUnitario: '', unidadeDeMedida: '' });
-    setIsModalAberto(true);
-  };
-
-  // --- FUNÇÃO: ABRIR MODAL PARA EDITAR PRODUTO EXISTENTE ---
-  const abrirModalEdicao = (produto) => {
-    setModoModal('editar');
-    setFormProduto({
-      id: produto.id,
-      nome: produto.nome,
-      categoria: produto.categoria,
-      custoUnitario: produto.custoUnitario,
-      unidadeDeMedida: produto.unidadeDeMedida
-    });
-    setIsModalAberto(true);
-  };
-
-  // --- FUNÇÃO: SALVAR (CADASTRAR OU EDITAR) NO BACK-END ---
-  const handleSalvarProduto = async (e) => {
-    e.preventDefault(); 
-    
-    const metodo = modoModal === 'cadastrar' ? 'POST' : 'PUT';
-    const urlFinal = modoModal === 'cadastrar' ? API_URL : `${API_URL}/${formProduto.id}`;
-
-    try {
-      const resposta = await fetch(urlFinal, {
-        method: metodo,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nome: formProduto.nome,
-          categoria: formProduto.categoria,
-          custoUnitario: parseFloat(formProduto.custoUnitario), 
-          unidadeDeMedida: formProduto.unidadeDeMedida 
-        })
-      });
-
-      if (!resposta.ok) throw new Error('Não foi possível salvar o produto.');
-      
-      setIsModalAberto(false);
-      buscarProdutos(); 
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+  // salvar / editar é feito pelo hook `handleSalvarProduto`
 
   // --- FUNÇÃO: EXCLUIR PRODUTO DO BACK-END ---
-  const handleExcluirProduto = async (id, nome) => {
-    if (window.confirm(`Tem certeza que deseja excluir o produto "${nome}"?`)) {
-      try {
-        const resposta = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-        if (!resposta.ok) throw new Error('Não foi possível excluir o produto.');
-        
-        buscarProdutos(); 
-      } catch (err) {
-        alert(err.message);
-      }
-    }
-  };
+  // exclusão feita por hook
 
   // --- FILTRAGEM EM TEMPO REAL NO FRONT-END ---
   const produtosFiltrados = produtos.filter(prod => {
@@ -173,7 +96,7 @@ export default function Produtos() {
               <th className="produtos-th">Nome do Produto</th>
               <th className="produtos-th">Categoria</th>
               <th className="produtos-th">Custo Unitário</th>
-              <th className="produtos-th">Medida</th>
+              <th className="produtos-th">Quantidade</th>
               <th className="produtos-th text-right">Ações</th>
             </tr>
           </thead>
@@ -207,11 +130,11 @@ export default function Produtos() {
                   </td>
 
                   <td className="produtos-td">R$ {produto.custoUnitario?.toFixed(2)}</td>
-                  <td className="produtos-td">{produto.unidadeDeMedida}</td>
+                  <td className="produtos-td">{produto.quantidade ?? 0}</td>
                   
                   <td className="produtos-td text-right">
                     <button className="produtos-btn-editar" onClick={() => abrirModalEdicao(produto)}>Editar</button>
-                    <button className="produtos-btn-excluir" onClick={() => handleExcluirProduto(produto.id, produto.nome)}>Excluir</button>
+                    <button className="produtos-btn-excluir" onClick={() => handleExcluirProduto(produto.id)}>Excluir</button>
                   </td>
                 </tr>
               );
@@ -268,18 +191,21 @@ export default function Produtos() {
                   />
                 </div>
                 <div className="produtos-form-group">
-                  <label className="produtos-label">Unidade (ex: kg, un, L)</label>
+                  <label className="produtos-label">Quantidade inicial</label>
                   <input 
                     required 
+                    type="number"
+                    min="0"
+                    step="1"
                     className="produtos-input" 
-                    value={formProduto.unidadeDeMedida} 
-                    onChange={e => setFormProduto({...formProduto, unidadeDeMedida: e.target.value})} 
+                    value={formProduto.quantidade} 
+                    onChange={e => setFormProduto({...formProduto, quantidade: e.target.value})} 
                   />
                 </div>
               </div>
 
               <div className="produtos-modal-footer">
-                <button type="button" className="produtos-btn-cancelar" onClick={() => setIsModalAberto(false)}>Cancelar</button>
+                <button type="button" className="produtos-btn-cancelar" onClick={() => fecharModal()}>Cancelar</button>
                 <button type="submit" className="produtos-btn-principal">Salvar Produto</button>
               </div>
             </form>

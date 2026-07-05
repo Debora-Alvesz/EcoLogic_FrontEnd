@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/setores-adm.css';
 import { useSetoresAdm } from '../hooks/useSetoresAdm';
+import SetorModal from '../components/SetorModal';
 
 export default function SetoresAdm() {
   const { setorVinculado, loading, handleVisualizarDetalhes } = useSetoresAdm();
+  const [isModalAberto, setIsModalAberto] = useState(false);
+  const [setorSelecionado, setSetorSelecionado] = useState(null);
 
   return (
+    <>
     <div className="conteudo-pagina">
       {/* Cabeçalho do Módulo */}
       <div className="header-modulo">
@@ -42,7 +46,10 @@ export default function SetoresAdm() {
               
               <button 
                 className="btn-visualizar" 
-                onClick={() => handleVisualizarDetalhes(setorVinculado.id)}
+                onClick={() => {
+                  setSetorSelecionado(setorVinculado);
+                  setIsModalAberto(true);
+                }}
               >
                 Acessar Painel
               </button>
@@ -67,6 +74,15 @@ export default function SetoresAdm() {
           </div>
         )}
       </div>
+      
     </div>
+    {isModalAberto && (
+      <SetorModal
+        isOpen={isModalAberto}
+        onClose={() => setIsModalAberto(false)}
+        setor={setorSelecionado}
+      />
+    )}
+    </>
   );
 }

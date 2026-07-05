@@ -1,0 +1,623 @@
+/* ============================================================
+   setor-modal.css — Estilos do Mini-Dashboard de Suprimentos
+   Design: Data-Driven UI · Fundo claro · Bordas arredondadas
+   ============================================================ */
+
+/* ── Variáveis de design ────────────────────────────────────── */
+.setor-modal-overlay,
+.setor-modal-overlay * {
+  --sm-bg: #f8f9fa;
+  --sm-surface: #ffffff;
+  --sm-border: #e9ecef;
+  --sm-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.08);
+  --sm-blue-dark: #1a2f5e;
+  --sm-blue: #2563eb;
+  --sm-blue-light: #eff6ff;
+  --sm-blue-mid: #dbeafe;
+  --sm-text-primary: #111827;
+  --sm-text-secondary: #6b7280;
+  --sm-text-muted: #9ca3af;
+  --sm-danger: #dc2626;
+  --sm-danger-light: #fef2f2;
+  --sm-success: #16a34a;
+  --sm-success-light: #f0fdf4;
+  --sm-warning: #d97706;
+  --sm-warning-light: #fffbeb;
+  --sm-radius-sm: 8px;
+  --sm-radius-md: 12px;
+  --sm-radius-lg: 16px;
+  --sm-radius-pill: 9999px;
+  --sm-font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Overlay / Backdrop ─────────────────────────────────────── */
+.setor-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 18, 40, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: sm-overlay-in 0.25s ease forwards;
+}
+
+@keyframes sm-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Container do Modal ─────────────────────────────────────── */
+.setor-modal-container {
+  background: var(--sm-bg);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  border-radius: var(--sm-radius-lg);
+  box-shadow: var(--sm-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--sm-font);
+  animation: sm-slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sm-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Cabeçalho ──────────────────────────────────────────────── */
+.setor-modal-header {
+  background: var(--sm-surface);
+  border-bottom: 1px solid var(--sm-border);
+  padding: 20px 24px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.setor-modal-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.setor-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--sm-blue-light);
+  color: var(--sm-blue);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 4px 10px;
+  border-radius: var(--sm-radius-pill);
+  width: fit-content;
+  margin-bottom: 6px;
+}
+
+.setor-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--sm-blue-dark);
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+}
+
+.setor-modal-subtitle {
+  font-size: 13px;
+  color: var(--sm-text-secondary);
+  margin: 0;
+}
+
+.setor-modal-close-btn {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid var(--sm-border);
+  background: var(--sm-surface);
+  border-radius: var(--sm-radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sm-text-secondary);
+  font-size: 18px;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+
+.setor-modal-close-btn:hover {
+  background: #fee2e2;
+  color: var(--sm-danger);
+  transform: scale(1.08);
+}
+
+/* ── Barra de Busca ─────────────────────────────────────────── */
+.setor-modal-search-wrap {
+  background: var(--sm-surface);
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--sm-border);
+  flex-shrink: 0;
+}
+
+.setor-modal-search-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.setor-modal-search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--sm-text-muted);
+  font-size: 15px;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.setor-modal-search-input {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  border: 1.5px solid var(--sm-border);
+  border-radius: var(--sm-radius-pill);
+  font-size: 14px;
+  font-family: var(--sm-font);
+  color: var(--sm-text-primary);
+  background: var(--sm-bg);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.setor-modal-search-input::placeholder {
+  color: var(--sm-text-muted);
+}
+
+.setor-modal-search-input:focus {
+  border-color: var(--sm-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  background: var(--sm-surface);
+}
+
+/* ── Corpo Scrollável ───────────────────────────────────────── */
+.setor-modal-body {
+  overflow-y: auto;
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.setor-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.setor-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.setor-modal-body::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+/* ── Seção: Labels ──────────────────────────────────────────── */
+.setor-modal-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--sm-text-muted);
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.setor-modal-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--sm-border);
+}
+
+/* ── Card Destaque (Item Mais Consumido) ─────────────────────── */
+.setor-modal-destaque-card {
+  background: var(--sm-surface);
+  border: 1px solid var(--sm-border);
+  border-radius: var(--sm-radius-md);
+  padding: 20px 24px 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.setor-modal-destaque-card:hover {
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1);
+}
+
+.setor-modal-destaque-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.setor-modal-destaque-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.setor-modal-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--sm-radius-md);
+  background: var(--sm-blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.setor-modal-destaque-nome {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sm-text-primary);
+  margin: 0 0 4px;
+}
+
+.setor-modal-destaque-sub {
+  font-size: 12px;
+  color: var(--sm-text-secondary);
+  margin: 0;
+}
+
+/* ── Badge de Tendência ─────────────────────────────────────── */
+.setor-modal-badge-tendencia {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: var(--sm-radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.setor-modal-badge-tendencia.alta {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.setor-modal-badge-tendencia.baixa {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.setor-modal-badge-tendencia.estavel {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+
+/* ── Número Gigante ─────────────────────────────────────────── */
+.setor-modal-num-gigante {
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--sm-blue-dark);
+  line-height: 1;
+  letter-spacing: -2px;
+  margin: 16px 0 4px;
+}
+
+.setor-modal-num-unidade {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--sm-text-secondary);
+  margin-left: 6px;
+  letter-spacing: 0;
+}
+
+/* ── Barra de Progresso ─────────────────────────────────────── */
+.setor-modal-progresso-wrap {
+  background: var(--sm-bg);
+  margin: 0 -24px;
+  padding: 14px 24px 16px;
+  border-top: 1px solid var(--sm-border);
+  margin-top: 16px;
+}
+
+.setor-modal-progresso-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--sm-text-secondary);
+  margin-bottom: 8px;
+}
+
+.setor-modal-progresso-header span:last-child {
+  font-weight: 600;
+  color: var(--sm-text-primary);
+}
+
+.setor-modal-progresso-track {
+  height: 7px;
+  background: var(--sm-border);
+  border-radius: var(--sm-radius-pill);
+  overflow: hidden;
+}
+
+.setor-modal-progresso-fill {
+  height: 100%;
+  border-radius: var(--sm-radius-pill);
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.setor-modal-progresso-fill.alta  { background: linear-gradient(90deg, #ef4444, #dc2626); }
+.setor-modal-progresso-fill.baixa { background: linear-gradient(90deg, #22c55e, #16a34a); }
+.setor-modal-progresso-fill.estavel { background: linear-gradient(90deg, #60a5fa, #2563eb); }
+
+/* ── Grid de Ações Rápidas ──────────────────────────────────── */
+.setor-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+/* ── Card de Ação Rápida ────────────────────────────────────── */
+.setor-modal-card {
+  background: var(--sm-surface);
+  border: 1px solid var(--sm-border);
+  border-radius: var(--sm-radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+.setor-modal-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--sm-blue);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.setor-modal-card:hover {
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1);
+  border-color: #bfdbfe;
+  transform: translateY(-2px);
+}
+
+.setor-modal-card:hover::before {
+  opacity: 1;
+}
+
+.setor-modal-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.setor-modal-card-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--sm-radius-sm);
+  background: var(--sm-blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.setor-modal-card-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--sm-blue);
+}
+
+.setor-modal-card-nome {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--sm-text-primary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.setor-modal-card-custo {
+  font-size: 12px;
+  color: var(--sm-text-secondary);
+  margin: 0;
+}
+
+/* ── Área de Input + Botão Confirmar ────────────────────────── */
+.setor-modal-card-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.setor-modal-qty-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1.5px solid var(--sm-border);
+  border-radius: var(--sm-radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--sm-font);
+  color: var(--sm-text-primary);
+  background: var(--sm-bg);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  text-align: center;
+  min-width: 0;
+}
+
+.setor-modal-qty-input::placeholder {
+  font-weight: 400;
+  color: var(--sm-text-muted);
+}
+
+.setor-modal-qty-input:focus {
+  border-color: var(--sm-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background: var(--sm-surface);
+}
+
+.setor-modal-confirm-btn {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--sm-radius-sm);
+  background: var(--sm-blue);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.setor-modal-confirm-btn:hover {
+  background: #1d4ed8;
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.setor-modal-confirm-btn:active {
+  transform: scale(0.95);
+}
+
+/* ── Feedback do Card (sucesso / erro) ──────────────────────── */
+.setor-modal-feedback {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: var(--sm-radius-sm);
+  animation: sm-fade-in 0.2s ease;
+}
+
+.setor-modal-feedback.sucesso {
+  background: var(--sm-success-light);
+  color: var(--sm-success);
+  border: 1px solid #bbf7d0;
+}
+
+.setor-modal-feedback.erro {
+  background: var(--sm-danger-light);
+  color: var(--sm-danger);
+  border: 1px solid #fecaca;
+}
+
+@keyframes sm-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Estado de Loading ──────────────────────────────────────── */
+.setor-modal-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 60px 0;
+  color: var(--sm-text-secondary);
+  font-size: 14px;
+}
+
+.setor-modal-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--sm-blue-mid);
+  border-top-color: var(--sm-blue);
+  border-radius: 50%;
+  animation: sm-spin 0.7s linear infinite;
+}
+
+@keyframes sm-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Empty State ────────────────────────────────────────────── */
+.setor-modal-empty {
+  text-align: center;
+  padding: 32px 0;
+  color: var(--sm-text-muted);
+  font-size: 14px;
+}
+
+.setor-modal-empty-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+/* ── Responsividade ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .setor-modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .setor-modal-container {
+    border-radius: var(--sm-radius-lg) var(--sm-radius-lg) 0 0;
+    max-height: 92vh;
+  }
+
+  .setor-modal-num-gigante {
+    font-size: 48px;
+  }
+
+  .setor-modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .setor-modal-header,
+  .setor-modal-search-wrap,
+  .setor-modal-body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .setor-modal-progresso-wrap {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
