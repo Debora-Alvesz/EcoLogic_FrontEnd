@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/setores.css';
+import '../styles/Setores.css';
 import { useSetores } from '../hooks/useSetores';
 
 export default function Setores() {

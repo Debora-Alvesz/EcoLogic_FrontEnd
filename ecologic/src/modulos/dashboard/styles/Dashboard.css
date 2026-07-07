@@ -1,0 +1,344 @@
+/* ==========================================================================
+   CONTAINER PRINCIPAL E CABEÇALHO
+   ========================================================================== */
+.dashboard-container {
+  padding: 40px 32px;
+  background-color: #f9fafb; /* Fundo cinza ultralimpo e moderno */
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #eaecf0;
+  padding-bottom: 20px;
+}
+
+.dashboard-title {
+  font-size: 28px;
+  color: #101828; /* Preto profundo para excelente contraste */
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.dashboard-subtitle {
+  font-size: 14px;
+  color: #475467; /* Cinza intermediário elegante */
+  margin: 6px 0 0 0;
+  font-weight: 400;
+}
+
+.dashboard-badge-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f0f7ff;
+  border: 1px solid #d0e7ff;
+  color: #0066cc; /* Azul padrão do seu app */
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dashboard-badge-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #0066cc;
+  border-radius: 50%;
+}
+
+/* ==========================================================================
+   GRID DE CARDS (MÉTRICAS METRICULARES)
+   ========================================================================== */
+.dashboard-grid-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card-dashboard-standard {
+  background: #ffffff;
+  border: 1px solid #eaecf0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0px 2px 8px rgba(16, 24, 40, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.card-dashboard-standard.border-blue {
+  border-top: 4px solid #0066cc; /* Detalhe superior em vez de lateral */
+}
+
+.card-waste-finance {
+  background: #fffbfa; /* Tom de alerta sutil */
+  border: 1px solid #fee4e2;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0px 2px 8px rgba(16, 24, 40, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.dashboard-card-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475467;
+  margin: 0;
+}
+
+.dashboard-card-sublabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #98a2b3;
+  margin: 2px 0 0 0;
+}
+
+.dashboard-card-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.bg-blue-light { background-color: #f0f7ff; color: #0066cc; }
+.bg-red-light { background-color: #fef3f2; color: #d92d20; }
+.bg-emerald-light { background-color: #edfcf2; color: #087443; }
+
+.dashboard-card-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #101828;
+  margin: 20px 0 8px 0;
+  letter-spacing: -0.03em;
+}
+
+.text-red-critical {
+  color: #d92d20 !important;
+}
+
+.dashboard-card-footer-text {
+  font-size: 13px;
+  color: #667085;
+  margin: 0;
+}
+
+.delta-tag-red {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #fef3f2;
+  color: #b42318;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid #fee4e2;
+}
+
+/* ==========================================================================
+   SEÇÕES DE RANKING E LISTAGENS
+   ========================================================================== */
+.dashboard-grid-rankings {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid-rankings {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.dashboard-section-header {
+  margin-bottom: 20px;
+}
+
+.dashboard-ranking-title {
+  font-size: 16px;
+  color: #101828;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-ranking-subtitle {
+  font-size: 12px;
+  color: #667085;
+  margin: 4px 0 0 0;
+}
+
+.dashboard-ranking-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0;
+  border-bottom: 1px solid #f2f4f7;
+}
+
+.dashboard-ranking-item:first-child { padding-top: 0; }
+.dashboard-ranking-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+.dashboard-item-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.dashboard-item-name {
+  color: #344054;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-position-tag {
+  font-size: 11px;
+  font-weight: 700;
+  background-color: #f2f4f7;
+  color: #475467;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.dashboard-item-value {
+  color: #101828;
+  font-weight: 600;
+}
+
+.dashboard-progress-bg {
+  height: 8px;
+  width: 100%;
+  background-color: #f2f4f7;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.dashboard-progress-bar {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Listas e Linhas de Auditores */
+.dashboard-admin-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 290px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.dashboard-admin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #f2f4f7;
+}
+
+.dashboard-admin-row:first-child { padding-top: 0; }
+.dashboard-admin-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.dashboard-admin-meta h4 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #344054;
+  margin: 0;
+}
+
+.dashboard-admin-meta p {
+  font-size: 12px;
+  color: #667085;
+  margin: 4px 0 0 0;
+}
+
+.dashboard-badge-gasto {
+  font-size: 13px;
+  font-weight: 600;
+  color: #101828;
+  background-color: #f9fafb;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #eaecf0;
+}
+
+.dashboard-badge-role {
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   RODAPÉ (GRÁFICOS E COMPLEMENTOS)
+   ========================================================================== */
+.dashboard-grid-footer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid-footer {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.chart-container {
+  background: #ffffff;
+  border: 1px solid #eaecf0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0px 2px 8px rgba(16, 24, 40, 0.04);
+}
+
+/* Customização fina da barra de rolagem interna */
+.dashboard-admin-list::-webkit-scrollbar {
+  width: 5px;
+}
+.dashboard-admin-list::-webkit-scrollbar-thumb {
+  background: #e4e7ec;
+  border-radius: 4px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .dashboard-container { padding: 24px 16px; }
+  .dashboard-title { font-size: 24px; }
+  .dashboard-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+}

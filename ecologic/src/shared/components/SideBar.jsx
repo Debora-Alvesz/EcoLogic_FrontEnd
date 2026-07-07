@@ -3,14 +3,18 @@ import '../styles/side-bar.css';
 import { useSideBar } from '../hooks/SideBar';
 import { useAuth } from '../contexts/AuthContext';
 
-const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu }) => {
-  // Inicializando com o Dashboard selecionado
+const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu, ehDiretor }) => {
+  // Inicializando com o Dashboard selecionado por padrão
   const { activeTab, handleTabChange } = useSideBar('Dashboard');
   const { isAdmin } = useAuth();
 
+  // Condição para exibir o Dashboard: precisa que o Auth Context ou o App.jsx confirmem o cargo de Diretor
+  const podeVerDashboard = ehDiretor || !isAdmin;
+
   // Definição das opções requisitadas (Dashboard, Setores, Produtos, Relatórios)
   const menuItems = [
-    {
+    // Usamos uma condição para só incluir o Dashboard na lista se o usuário for o Diretor
+    ...(podeVerDashboard ? [{
       id: 'Dashboard',
       label: 'Dashboard',
       icon: (
@@ -21,7 +25,7 @@ const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu })
           <rect x="3" y="14" width="7" height="7" rx="1" />
         </svg>
       )
-    },
+    }] : []),
     {
       id: 'Setores',
       label: 'Setores',
@@ -79,7 +83,7 @@ const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu })
           </button>
         </div>
 
-        {/* Menu de Navegação - Deixando apenas da parte de operações para baixo */}
+        {/* Menu de Navegação - Seção Operações */}
         <nav className="sidebar-menu">
           <span className="sidebar-section-title">Operações</span>
 
@@ -88,11 +92,10 @@ const SideBar = ({ currentPage, onNavigate, isMobileMenuOpen, closeMobileMenu })
               key={item.id}
               className={`sidebar-item ${activeTab === item.id ? 'active' : ''}`}
               
-              // A tualizamos o onClick para avisar o App.jsx quando mudar de tela
               onClick={() => {
                 handleTabChange(item.id);
                 
-                // Redireciona apenas se for uma das telas que já criamos no App.jsx
+                // Redireciona de acordo com o clique e validação de permissões
                 if (item.id === 'Produtos') onNavigate('produtos');
                 if (item.id === 'Dashboard') onNavigate('dashboard');
                 if (item.id === 'Setores') {
