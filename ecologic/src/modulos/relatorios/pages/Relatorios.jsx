@@ -18,11 +18,26 @@ export default function Relatorios() {
     formatarData,
     formatarDataHora,
     formatarMoeda,
+    exportarPDF,
   } = useRelatorios();
+
+  // Estado de exportação de PDF
+  const [exportandoId, setExportandoId] = useState(null);
 
   // Estados dos Modais
   const [mostrarModal, setMostrarModal] = useState(false);
   const [mostrarModalDetalhes, setMostrarModalDetalhes] = useState(relatorioSelecionado !== null);
+
+  const handleExportarPDF = async (id) => {
+    setExportandoId(id);
+    try {
+      await exportarPDF(id);
+    } catch (error) {
+      // Erro é tratado pelo próprio hook useRelatorios
+    } finally {
+      setExportandoId(null);
+    }
+  };
 
   // Estados do Formulário (Novo Relatório)
   const [formData, setFormData] = useState({
@@ -136,6 +151,13 @@ export default function Relatorios() {
                   </span>
                   <button className="btn-visualizar" onClick={() => abrirDetalhes(relatorio)}>
                     Visualizar
+                  </button>
+                  <button 
+                    className="btn-pdf" 
+                    onClick={() => handleExportarPDF(relatorio.id)}
+                    disabled={exportandoId === relatorio.id}
+                  >
+                    {exportandoId === relatorio.id ? "Exportando..." : "Exportar PDF"}
                   </button>
                 </div>
               </div>
@@ -309,6 +331,14 @@ export default function Relatorios() {
             </div>
 
             <div className="modal-actions">
+              <button 
+                type="button" 
+                className="btn-pdf" 
+                onClick={() => handleExportarPDF(relatorioSelecionado.id)}
+                disabled={exportandoId === relatorioSelecionado.id}
+              >
+                {exportandoId === relatorioSelecionado.id ? "Exportando..." : "Exportar PDF"}
+              </button>
               <button 
                 type="button" 
                 className="btn-confirmar" 

@@ -179,6 +179,48 @@ export function useRelatorios() {
     }).format(valor);
   }, []);
 
+  /**
+   * Exporta um relatório existente para o formato PDF
+   * @param {number|string} id - ID do relatório a exportar
+   */
+  const exportarPDF = useCallback(async (id) => {
+    try {
+      setErro(null);
+      const response = await api.get(`/relatorios/${id}/exportar-pdf`, {
+        responseType: 'blob'
+      });
+      
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `relatorio-${id}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      let mensagem = "Erro ao exportar relatório para PDF";
+      if (error.response?.data instanceof Blob) {
+        try {
+          const text = await error.response.data.text();
+          const obj = JSON.parse(text);
+          if (obj.message || obj.mensagem) {
+            mensagem = obj.message || obj.mensagem;
+          }
+        } catch (_) {
+          // ignora falha de parse
+        }
+      } else if (error.response?.data?.message) {
+        mensagem = error.response.data.message;
+      } else if (error.message) {
+        mensagem = error.message;
+      }
+      setErro(mensagem);
+      console.error("Erro ao exportar PDF:", error);
+      throw error;
+    }
+  }, []);
+
   return {
     // Estado
     relatorios,
@@ -199,5 +241,6 @@ export function useRelatorios() {
     formatarData,
     formatarDataHora,
     formatarMoeda,
+    exportarPDF,
   };
 }
