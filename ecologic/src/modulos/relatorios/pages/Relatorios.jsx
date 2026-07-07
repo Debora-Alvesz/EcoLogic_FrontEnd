@@ -121,7 +121,7 @@ export default function Relatorios() {
         /* CARD VAZIO CENTRALIZADO */
         <div className="relatorios-card">
           <h2>Relatórios</h2>
-          <p>Em breve: relatórios consolidados de consumo.</p>
+          <p>Gere o seu primeiro relatório clicando no botão "Gerar Relatório"</p>
         </div>
       ) : (
         /* LISTA DE BLOQUINHOS AZUIS */
@@ -155,14 +155,6 @@ export default function Relatorios() {
                   </p>
                 )}
 
-                <div className="relatorio-resumo">
-                  <p>
-                    <strong>Total de Itens:</strong> {relatorio.totalQuantidade}
-                  </p>
-                  <p>
-                    <strong>Custo Total:</strong> {formatarMoeda(relatorio.custoTotal)}
-                  </p>
-                </div>
               </div>
             </div>
           ))}

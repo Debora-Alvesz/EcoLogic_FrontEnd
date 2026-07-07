@@ -17,7 +17,7 @@ export function useRelatorios() {
       setLoading(true);
       setErro(null);
       const response = await api.get("/relatorios");
-      setRelatorios(response.data || []);
+      setRelatorios((response.data || []).reverse());
     } catch (error) {
       const mensagem = error.response?.data?.message || "Erro ao buscar relatórios";
       setErro(mensagem);
