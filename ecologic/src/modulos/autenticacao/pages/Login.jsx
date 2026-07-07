@@ -16,8 +16,12 @@ function Login() {
       await login(email, senha)
       setSucesso('Login realizado com sucesso. Redirecionando...')
       
-      // Redirecionamento nativo do navegador
-      window.location.href = '/dashboard'
+      const role = localStorage.getItem('userRole')
+      if (role === 'ADMINISTRADOR') {
+        window.location.href = '/setores-adm'
+      } else {
+        window.location.href = '/dashboard'
+      }
       
     } catch (error) {
       console.error(error)

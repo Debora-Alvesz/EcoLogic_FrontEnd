@@ -27,8 +27,7 @@ function CriarPerfil() {
     try {
       await cadastrarUsuario(dados, tipoUsuario)
       alert("Perfil criado com sucesso!")
-      // Se quiser redirecionar para o login após o sucesso, descomente a linha abaixo:
-      // window.location.href = '/login'
+      window.location.href = '/login'
     } catch (err) {
       console.error(err)
     }
