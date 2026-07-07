@@ -264,70 +264,72 @@ export default function Relatorios() {
               </span>
             </div>
 
-            <div className="meta-dados-detalhes">
-              <p>
-                <strong>Período:</strong> {formatarData(relatorioSelecionado.periodoInicio)} até {formatarData(relatorioSelecionado.periodoFim)}
-              </p>
-              
-              {relatorioSelecionado.nomeSetor && (
+            <div className="modal-detalhes-scroll">
+              <div className="meta-dados-detalhes">
                 <p>
-                  <strong>Setor:</strong> {relatorioSelecionado.nomeSetor}
+                  <strong>Período:</strong> {formatarData(relatorioSelecionado.periodoInicio)} até {formatarData(relatorioSelecionado.periodoFim)}
                 </p>
-              )}
+                
+                {relatorioSelecionado.nomeSetor && (
+                  <p>
+                    <strong>Setor:</strong> {relatorioSelecionado.nomeSetor}
+                  </p>
+                )}
 
-              {relatorioSelecionado.administradorNome && (
-                <p>
-                  <strong>Administrador:</strong> {relatorioSelecionado.administradorNome}
-                </p>
-              )}
+                {relatorioSelecionado.administradorNome && (
+                  <p>
+                    <strong>Administrador:</strong> {relatorioSelecionado.administradorNome}
+                  </p>
+                )}
 
-              <div className="detalhes-resumo">
-                <p>
-                  <strong>Total de Itens:</strong> {relatorioSelecionado.totalQuantidade}
-                </p>
-                <p>
-                  <strong>Custo Total:</strong> {formatarMoeda(relatorioSelecionado.custoTotal)}
-                </p>
+                <div className="detalhes-resumo">
+                  <p>
+                    <strong>Total de Itens:</strong> {relatorioSelecionado.totalQuantidade}
+                  </p>
+                  <p>
+                    <strong>Custo Total:</strong> {formatarMoeda(relatorioSelecionado.custoTotal)}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className="tabela-consumo-container">
-              <h3>Consumos Detalhados do Período</h3>
+              <div className="tabela-consumo-container">
+                <h3>Consumos Detalhados do Período</h3>
 
-              {loadingConsumo ? (
-                <p className="loading-text">Carregando detalhes...</p>
-              ) : (
-                <table className="tabela-consumo">
-                  <thead>
-                    <tr>
-                      <th>Data</th>
-                      <th>Produto</th>
-                      <th>Quantidade</th>
-                      <th>Setor</th>
-                      <th>Justificativa</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {!relatorioSelecionado.consumos || relatorioSelecionado.consumos.length === 0 ? (
+                {loadingConsumo ? (
+                  <p className="loading-text">Carregando detalhes...</p>
+                ) : (
+                  <table className="tabela-consumo">
+                    <thead>
                       <tr>
-                        <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
-                          Nenhum consumo registrado para este período/setor.
-                        </td>
+                        <th>Data</th>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Setor</th>
+                        <th>Justificativa</th>
                       </tr>
-                    ) : (
-                      relatorioSelecionado.consumos.map((consumo) => (
-                        <tr key={consumo.id}>
-                          <td>{formatarData(consumo.dataRetirada)}</td>
-                          <td>{consumo.nomeProduto}</td>
-                          <td>{consumo.quantidade}</td>
-                          <td>{consumo.nomeSetor}</td>
-                          <td>{consumo.justificativa || "-"}</td>
+                    </thead>
+                    <tbody>
+                      {!relatorioSelecionado.consumos || relatorioSelecionado.consumos.length === 0 ? (
+                        <tr>
+                          <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
+                            Nenhum consumo registrado para este período/setor.
+                          </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              )}
+                      ) : (
+                        relatorioSelecionado.consumos.map((consumo) => (
+                          <tr key={consumo.id}>
+                            <td>{formatarData(consumo.dataRetirada)}</td>
+                            <td>{consumo.nomeProduto}</td>
+                            <td>{consumo.quantidade}</td>
+                            <td>{consumo.nomeSetor}</td>
+                            <td>{consumo.justificativa || "-"}</td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                )}
+              </div>
             </div>
 
             <div className="modal-actions">
