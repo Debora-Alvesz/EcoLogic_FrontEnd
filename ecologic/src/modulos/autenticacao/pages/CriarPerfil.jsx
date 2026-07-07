@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { useCriarPerfil } from '../hooks/useCriarPerfil'
 import '../styles/criar-perfil.css'
 
@@ -16,19 +17,20 @@ function CriarPerfil() {
 
     // Validações simples
     if (dados.senha !== dados.confirmarSenha) {
-      alert("As senhas não coincidem!")
+      toast.error("As senhas não coincidem!")
       return
     }
     if (!dados.termos) {
-      alert("Você precisa confirmar que os dados pertencem a um usuario autorizado.")
+      toast.warning("Você precisa confirmar que os dados pertencem a um usuario autorizado.")
       return
     }
 
     try {
       await cadastrarUsuario(dados, tipoUsuario)
-      alert("Perfil criado com sucesso!")
+      toast.success("Perfil criado com sucesso!")
       window.location.href = '/login'
     } catch (err) {
+      toast.error(err.response?.data?.message || 'Ocorreu um erro ao tentar criar o perfil.')
       console.error(err)
     }
   }

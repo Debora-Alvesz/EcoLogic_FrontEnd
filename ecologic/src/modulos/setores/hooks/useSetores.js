@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const API_BASE_URL = 'http://localhost:8080/api/v1/setores';
 // OBS: Ajuste esta URL abaixo para o endpoint real onde você busca os usuários/administradores do sistema
@@ -88,10 +89,11 @@ export function useSetores() {
         carregarDados(); // Recarrega a tabela atualizada
       } else {
         const erro = await response.json();
-        alert(`Erro: ${erro.message || 'Falha ao salvar setor'}`);
+        toast.error(`Erro: ${erro.message || 'Falha ao salvar setor'}`);
       }
     } catch (error) {
       console.error("Erro ao conectar com o servidor:", error);
+      toast.error("Erro ao conectar com o servidor.");
     }
   };
 
@@ -107,10 +109,11 @@ export function useSetores() {
       if (response.status === 204) {
         carregarDados(); // Recarrega a listagem
       } else {
-        alert("Erro ao excluir o setor.");
+        toast.error("Erro ao excluir o setor.");
       }
     } catch (error) {
       console.error("Erro ao deletar setor:", error);
+      toast.error("Erro ao deletar setor.");
     }
   };
 
