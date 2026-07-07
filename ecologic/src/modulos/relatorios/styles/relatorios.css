@@ -314,3 +314,77 @@
   font-style: italic;
   padding: 20px 0;
 }
+
+/* --- ERRO BANNER --- */
+.erro-banner {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+.erro-banner p {
+  margin: 0;
+}
+
+/* --- ERRO FORMULÁRIO --- */
+.erro-form {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+/* --- RESUMO DE DADOS NO CARD --- */
+.relatorio-resumo {
+  display: flex;
+  gap: 24px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.relatorio-resumo p {
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.relatorio-resumo strong {
+  color: #1f3b73;
+  font-weight: 600;
+}
+
+/* --- RESUMO DETALHES MODAL --- */
+.detalhes-resumo {
+  display: flex;
+  gap: 24px;
+  padding-top: 12px;
+  border-top: 1px solid #d1d5db;
+  margin-top: 12px;
+}
+
+.detalhes-resumo p {
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.detalhes-resumo strong {
+  color: #1f3b73;
+  font-weight: 600;
+}
+
+/* --- BOTÕES DESATIVADOS --- */
+.btn-gerar:disabled,
+.btn-visualizar:disabled,
+.btn-cancelar:disabled,
+.btn-confirmar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

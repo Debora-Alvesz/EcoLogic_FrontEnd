@@ -1,126 +1,107 @@
 import React, { useEffect, useState } from "react";
 import "../styles/relatorios.css"; 
-import { api } from "../../../shared/services/api"; // Ajuste conforme sua estrutura
+import { useRelatorios } from "../hooks/useRelatorios";
 
 export default function Relatorios() {
-  const [relatorios, setRelatorios] = useState([]);
-  const [setores, setSetores] = useState([]);
-  const [consumos, setConsumos] = useState([]); // Armazena os consumos reais do banco
-  const [loading, setLoading] = useState(true);
-  const [loadingConsumo, setLoadingConsumo] = useState(false);
+  const {
+    relatorios,
+    setores,
+    relatorioSelecionado,
+    loading,
+    loadingConsumo,
+    erro,
+    buscarRelatorios,
+    buscarSetores,
+    gerarRelatorio,
+    abrirDetalhes,
+    fecharDetalhes,
+    formatarData,
+    formatarDataHora,
+    formatarMoeda,
+  } = useRelatorios();
 
   // Estados dos Modais
   const [mostrarModal, setMostrarModal] = useState(false);
-  const [mostrarModalDetalhes, setMostrarModalDetalhes] = useState(false);
-  const [relatorioSelecionado, setRelatorioSelecionado] = useState(null);
+  const [mostrarModalDetalhes, setMostrarModalDetalhes] = useState(relatorioSelecionado !== null);
 
   // Estados do Formulário (Novo Relatório)
-  const [titulo, setTitulo] = useState("");
-  const [tipo, setTipo] = useState("GERAL");
-  const [inicio, setInicio] = useState("");
-  const [fim, setFim] = useState("");
-  const [setor, setSetor] = useState("");
+  const [formData, setFormData] = useState({
+    tipo: "GERAL",
+    inicio: "",
+    fim: "",
+    setor: "",
+  });
+
+  const [erroForm, setErroForm] = useState("");
+  const [carregandoSubmit, setCarregandoSubmit] = useState(false);
 
   useEffect(() => {
     buscarRelatorios();
     buscarSetores();
-  }, []);
+  }, [buscarRelatorios, buscarSetores]);
 
-  // Busca a lista de relatórios (capas) gerados
-  async function buscarRelatorios() {
-    try {
-      const response = await api.get("/relatorios");
-      setRelatorios(response.data);
-    } catch (error) {
-      console.error("Erro ao buscar relatórios:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  useEffect(() => {
+    setMostrarModalDetalhes(relatorioSelecionado !== null);
+  }, [relatorioSelecionado]);
 
-  // Busca os setores para popular o select do formulário
-  async function buscarSetores() {
-    try {
-      const response = await api.get("/api/v1/setores");
-      setSetores(response.data);
-    } catch (error) {
-      console.error("Erro ao buscar setores:", error);
-    }
-  }
-
-  // Formata as datas vindas do Java (LocalDateTime/LocalDate) para o padrão brasileiro
-  function formatarData(data) {
-    if (!data) return "";
-    return new Date(data).toLocaleDateString("pt-BR");
-  }
-
-  // Abre o modal de detalhes e busca os consumos REAIS do banco de dados
-  async function abrirDetalhes(relatorio) {
-    setRelatorioSelecionado(relatorio);
-    setMostrarModalDetalhes(true);
-    setLoadingConsumo(true);
-    setConsumos([]); // Limpa a tabela anterior enquanto carrega
-
-    try {
-      // Faz o GET na rota exata do seu ConsumoController Java
-      const response = await api.get("/consumos");
-      
-      // Se o relatório for POR_SETOR, filtramos os dados aqui no Front-end 
-      // comparando o nome do setor do consumo com o nome do setor do relatório
-      if (relatorio.tipoRelatorio === "POR_SETOR" && relatorio.setor) {
-        const consumosFiltrados = response.data.filter(
-          (c) => c.setor && c.setor.nome === relatorio.setor.nome
-        );
-        setConsumos(consumosFiltrados);
-      } else {
-        // Se for GERAL, mostra todos os consumos que vieram do banco
-        setConsumos(response.data);
-      }
-    } catch (error) {
-      console.error("Erro ao buscar consumos do banco:", error);
-    } finally {
-      setLoadingConsumo(false);
-    }
-  }
-
-// Envia os dados para gerar um novo relatório no back-end
+  // Envia os dados para gerar um novo relatório no back-end
   async function handleSubmit(e) {
     e.preventDefault();
+    setCarregandoSubmit(true);
+    setErroForm("");
+
     try {
-      // Montando o objeto exatamente igual ao seu RelatorioRequestDto do Java
+      // Monta o objeto de acordo com o contrato da API
       const dadosRelatorio = {
-        tipoRelatorio: tipo, // Envia "GERAL" ou "POR_SETOR"
-        // Transforma o input de data simples em LocalDateTime adicionando a hora exigida pelo Java
-        periodoInicio: inicio ? `${inicio}T00:00:00` : null, 
-        periodoFim: fim ? `${fim}T23:59:59` : null,
-        // Se for POR_SETOR, envia o número puro no campo setorId. Se for GERAL, envia null
-        setorId: tipo === "POR_SETOR" && setor ? Number(setor) : null
+        tipoRelatorio: formData.tipo,
+        periodoInicio: formData.inicio ? `${formData.inicio}T00:00:00` : null,
+        periodoFim: formData.fim ? `${formData.fim}T23:59:59` : null,
+        setorId: formData.tipo === "POR_SETOR" && formData.setor ? Number(formData.setor) : null,
       };
 
-      // Dispara o POST na rota correta
-      await api.post("/relatorios", dadosRelatorio);
+      await gerarRelatorio(dadosRelatorio);
 
       // Limpa o formulário após o sucesso
-      setTitulo("");
-      setTipo("GERAL");
-      setInicio("");
-      setFim("");
-      setSetor("");
+      setFormData({
+        tipo: "GERAL",
+        inicio: "",
+        fim: "",
+        setor: "",
+      });
 
       setMostrarModal(false);
-      buscarRelatorios(); // Atualiza a lista na tela com o novo bloquinho azul!
     } catch (error) {
-      console.error("Erro detalhado retornado pela API:", error.response?.data || error.message);
-      
-      // Captura mensagens de validação do Jakarta se houver
-      const mensagemErro = error.response?.data?.message || "Verifique se preencheu todos os campos corretamente.";
-      alert("Não foi possível gerar o relatório. Motivo: " + mensagemErro);
+      setErroForm(
+        error.message ||
+        error.response?.data?.message ||
+        "Verifique se preencheu todos os campos corretamente."
+      );
+    } finally {
+      setCarregandoSubmit(false);
     }
+  }
+
+  // Manipula mudanças no formulário
+  function handleFormChange(field, value) {
+    setFormData((prev) => {
+      const newData = { ...prev, [field]: value };
+      // Limpa o setor se mudar de tipo
+      if (field === "tipo" && value !== "POR_SETOR") {
+        newData.setor = "";
+      }
+      return newData;
+    });
   }
 
   return (
     <div className="relatorios-container">
-      
+      {/* EXIBIR ERRO GLOBAL */}
+      {erro && (
+        <div className="erro-banner">
+          <p>{erro}</p>
+        </div>
+      )}
+
       {/* CABEÇALHO DA TELA */}
       <div className="relatorios-header">
         <div>
@@ -147,7 +128,6 @@ export default function Relatorios() {
         <div className="relatorios-lista">
           {relatorios.map((relatorio) => (
             <div key={relatorio.id} className="relatorio-item">
-              
               <div className="relatorio-info">
                 <h3>{relatorio.titulo}</h3>
                 <div className="relatorio-topo-direita">
@@ -166,16 +146,24 @@ export default function Relatorios() {
                 </p>
 
                 <p>
-                  <strong>Gerado em:</strong> {formatarData(relatorio.dataGeracao)}
+                  <strong>Gerado em:</strong> {formatarDataHora(relatorio.dataGeracao)}
                 </p>
 
-                {relatorio.setor && (
+                {relatorio.nomeSetor && (
                   <p>
-                    <strong>Setor:</strong> {relatorio.setor.nome}
+                    <strong>Setor:</strong> {relatorio.nomeSetor}
                   </p>
                 )}
-              </div>
 
+                <div className="relatorio-resumo">
+                  <p>
+                    <strong>Total de Itens:</strong> {relatorio.totalQuantidade}
+                  </p>
+                  <p>
+                    <strong>Custo Total:</strong> {formatarMoeda(relatorio.custoTotal)}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -186,33 +174,39 @@ export default function Relatorios() {
         <div className="modal-overlay">
           <div className="modal">
             <h2>Novo Relatório</h2>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                placeholder="Título do Relatório"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
-                required
-              />
+            
+            {erroForm && <div className="erro-form">{erroForm}</div>}
 
+            <form onSubmit={handleSubmit}>
               <select 
-                value={tipo} 
-                onChange={(e) => {
-                  setTipo(e.target.value);
-                  if (e.target.value !== "POR_SETOR") setSetor("");
-                }}
+                value={formData.tipo} 
+                onChange={(e) => handleFormChange("tipo", e.target.value)}
               >
                 <option value="GERAL">Geral</option>
                 <option value="POR_SETOR">Por Setor</option>
               </select>
 
               <div className="datas-group">
-                <input type="date" value={inicio} onChange={(e) => setInicio(e.target.value)} required />
-                <input type="date" value={fim} onChange={(e) => setFim(e.target.value)} required />
+                <input 
+                  type="date" 
+                  value={formData.inicio} 
+                  onChange={(e) => handleFormChange("inicio", e.target.value)} 
+                  required 
+                />
+                <input 
+                  type="date" 
+                  value={formData.fim} 
+                  onChange={(e) => handleFormChange("fim", e.target.value)} 
+                  required 
+                />
               </div>
 
-              {tipo === "POR_SETOR" && (
-                <select value={setor} onChange={(e) => setSetor(e.target.value)} required>
+              {formData.tipo === "POR_SETOR" && (
+                <select 
+                  value={formData.setor} 
+                  onChange={(e) => handleFormChange("setor", e.target.value)} 
+                  required
+                >
                   <option value="">Selecione um setor...</option>
                   {setores.map((s) => (
                     <option key={s.id} value={s.id}>{s.nome}</option>
@@ -221,17 +215,31 @@ export default function Relatorios() {
               )}
 
               <div className="modal-actions">
-                <button type="button" className="btn-cancelar" onClick={() => setMostrarModal(false)}>
+                <button 
+                  type="button" 
+                  className="btn-cancelar" 
+                  onClick={() => {
+                    setMostrarModal(false);
+                    setErroForm("");
+                  }}
+                  disabled={carregandoSubmit}
+                >
                   Cancelar
                 </button>
-                <button type="submit" className="btn-confirmar">Gerar</button>
+                <button 
+                  type="submit" 
+                  className="btn-confirmar"
+                  disabled={carregandoSubmit}
+                >
+                  {carregandoSubmit ? "Gerando..." : "Gerar"}
+                </button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* MODAL 2: DETALHES COM A TABELA DO BANCO DE DADOS */}
+      {/* MODAL 2: DETALHES COM CONSUMOS DO RELATÓRIO */}
       {mostrarModalDetalhes && relatorioSelecionado && (
         <div className="modal-overlay">
           <div className="modal modal-largo">
@@ -243,39 +251,63 @@ export default function Relatorios() {
             </div>
 
             <div className="meta-dados-detalhes">
-              <p><strong>Período avaliado:</strong> {formatarData(relatorioSelecionado.periodoInicio)} até {formatarData(relatorioSelecionado.periodoFim)}</p>
-              {relatorioSelecionado.setor && <p><strong>Setor:</strong> {relatorioSelecionado.setor.nome}</p>}
+              <p>
+                <strong>Período:</strong> {formatarData(relatorioSelecionado.periodoInicio)} até {formatarData(relatorioSelecionado.periodoFim)}
+              </p>
+              
+              {relatorioSelecionado.nomeSetor && (
+                <p>
+                  <strong>Setor:</strong> {relatorioSelecionado.nomeSetor}
+                </p>
+              )}
+
+              {relatorioSelecionado.administradorNome && (
+                <p>
+                  <strong>Administrador:</strong> {relatorioSelecionado.administradorNome}
+                </p>
+              )}
+
+              <div className="detalhes-resumo">
+                <p>
+                  <strong>Total de Itens:</strong> {relatorioSelecionado.totalQuantidade}
+                </p>
+                <p>
+                  <strong>Custo Total:</strong> {formatarMoeda(relatorioSelecionado.custoTotal)}
+                </p>
+              </div>
             </div>
 
             <div className="tabela-consumo-container">
-              <h3>Dados de Consumo Coletados do Banco</h3>
-              
+              <h3>Consumos Detalhados do Período</h3>
+
               {loadingConsumo ? (
-                <p className="loading-text">Buscando consumos reais no banco de dados...</p>
+                <p className="loading-text">Carregando detalhes...</p>
               ) : (
                 <table className="tabela-consumo">
                   <thead>
                     <tr>
-                      <th>Data do Registro</th>
-                      <th>Descrição</th>
+                      <th>Data</th>
+                      <th>Produto</th>
                       <th>Quantidade</th>
-                      <th>Valor/Tipo</th>
+                      <th>Setor</th>
+                      <th>Justificativa</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {consumos.length === 0 ? (
+                    {!relatorioSelecionado.consumos || relatorioSelecionado.consumos.length === 0 ? (
                       <tr>
-                        <td colSpan="4" style={{ textAlign: "center", padding: "20px" }}>
-                          Nenhum registro de consumo encontrado para este período/setor no banco.
+                        <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
+                          Nenhum consumo registrado para este período/setor.
                         </td>
                       </tr>
                     ) : (
-                      consumos.map((c) => (
-                        <tr key={c.id}>
-                          <td>{formatarData(c.dataRegistro || c.data)}</td>
-                          <td>{c.descricao || "Consumo registrado"}</td>
-                          <td>{c.quantidade || 0}</td>
-                          <td>{c.valorKwh || c.tipoFonte || "Ativo"}</td>
+                      relatorioSelecionado.consumos.map((consumo) => (
+                        <tr key={consumo.id}>
+                          <td>{formatarData(consumo.dataRetirada)}</td>
+                          <td>{consumo.nomeProduto}</td>
+                          <td>{consumo.quantidade}</td>
+                          <td>{consumo.nomeSetor}</td>
+                          <td>{consumo.justificativa || "-"}</td>
                         </tr>
                       ))
                     )}
@@ -285,14 +317,17 @@ export default function Relatorios() {
             </div>
 
             <div className="modal-actions">
-              <button type="button" className="btn-confirmar" onClick={() => setMostrarModalDetalhes(false)}>
-                Fechar Detalhes
+              <button 
+                type="button" 
+                className="btn-confirmar" 
+                onClick={() => fecharDetalhes()}
+              >
+                Fechar
               </button>
             </div>
           </div>
         </div>
       )}
-
     </div>
   );
 }
