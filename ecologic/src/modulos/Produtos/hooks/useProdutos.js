@@ -17,6 +17,10 @@ export function useProdutos() {
     custoUnitario: '',
   });
 
+  const [isModalAdicionarAberto, setIsModalAdicionarAberto] = useState(false);
+  const [produtoSelecionado, setProdutoSelecionado] = useState(null);
+  const [quantidadeAdicionar, setQuantidadeAdicionar] = useState(0);
+
   const fetchProdutos = useCallback(async () => {
     setLoading(true);
     setErro(null);
@@ -55,6 +59,51 @@ export function useProdutos() {
     setIsModalAberto(false);
   };
 
+  const abrirModalAdicionarQuantidade = (produto) => {
+    setProdutoSelecionado(produto);
+    setQuantidadeAdicionar(0);
+    setIsModalAdicionarAberto(true);
+  };
+
+  const fecharModalAdicionarQuantidade = () => {
+    setIsModalAdicionarAberto(false);
+    setProdutoSelecionado(null);
+    setQuantidadeAdicionar(0);
+  };
+
+  const handleAdicionarQuantidade = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+
+    if (quantidadeAdicionar <= 0) {
+      setErro('Quantidade deve ser maior que 0.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setErro(null);
+
+      const novaQuantidade = (produtoSelecionado.quantidade ?? 0) + parseInt(quantidadeAdicionar, 10);
+      const payload = {
+        nome: produtoSelecionado.nome,
+        categoria: produtoSelecionado.categoria,
+        custoUnitario: produtoSelecionado.custoUnitario,
+        quantidade: novaQuantidade,
+      };
+
+      const resp = await api.put(`/produtos/${produtoSelecionado.id}`, payload, { headers: { 'Content-Type': 'application/json' } });
+      setProdutos((prev) => prev.map((p) => (p.id === resp.data.id ? resp.data : p)));
+
+      setIsModalAdicionarAberto(false);
+    } catch (err) {
+      const mensagem = err.response?.data?.mensagem || err.response?.data?.message || 'Erro ao adicionar quantidade.';
+      setErro(mensagem);
+      console.error('[useProdutos] erro adicionar quantidade', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const validarProduto = (p) => {
     if (!p.nome || !p.nome.trim()) return 'Nome é obrigatório.';
     if (!p.categoria || !p.categoria.trim()) return 'Categoria é obrigatória.';
@@ -86,8 +135,8 @@ export function useProdutos() {
       setErro(null);
 
       if (modoModal === 'cadastrar') {
-        const resp = await api.post('/produtos', payload, { headers: { 'Content-Type': 'application/json' } });
-        setProdutos((prev) => [resp.data, ...prev]);
+        await api.post('/produtos', payload, { headers: { 'Content-Type': 'application/json' } });
+        await fetchProdutos(); // Recarrega a tabela automaticamente
       } else {
         const resp = await api.put(`/produtos/${formProduto.id}`, payload, { headers: { 'Content-Type': 'application/json' } });
         setProdutos((prev) => prev.map((p) => (p.id === resp.data.id ? resp.data : p)));
@@ -135,5 +184,12 @@ export function useProdutos() {
     handleSalvarProduto,
     handleExcluirProduto,
     fetchProdutos,
+    isModalAdicionarAberto,
+    produtoSelecionado,
+    quantidadeAdicionar,
+    setQuantidadeAdicionar,
+    abrirModalAdicionarQuantidade,
+    fecharModalAdicionarQuantidade,
+    handleAdicionarQuantidade,
   };
 }

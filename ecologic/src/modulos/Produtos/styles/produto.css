@@ -135,6 +135,18 @@
   font-size: 12px;
 }
 
+.produtos-btn-adicionar {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
 .produtos-btn-excluir {
   background-color: #fee2e2;
   color: #b91c1c;
@@ -226,6 +238,38 @@
   font-weight: bold;
 }
 
+.produtos-modal-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.produtos-btn-cancelar {
+  background-color: #e2e8f0;
+  color: #475569;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  flex: 1;
+}
+
+.produtos-info-estoque {
+  background-color: #f0f9ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  color: #0369a1;
+  font-size: 14px;
+}
+
+.produtos-info-estoque p {
+  margin: 0;
+}
+
 /* ==========================================================================
    REGRAS DE RESPONSIVIDADE (MOBILE / TABLET) - ATUALIZADO
    ========================================================================== */
@@ -282,6 +326,14 @@
 
   .produtos-btn-editar {
     margin-right: 6px;   /* Garante um espaçamento fixo e controlado entre os dois */
+  }
+
+  .produtos-btn-adicionar {
+    padding: 8px 12px;
+    font-size: 13px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
   }
 
   /* Faz com que os campos de Custo e Medida fiquem um embaixo do outro no modal */

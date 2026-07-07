@@ -17,6 +17,13 @@ export default function Produtos() {
     fecharModal,
     handleSalvarProduto,
     handleExcluirProduto,
+    isModalAdicionarAberto,
+    produtoSelecionado,
+    quantidadeAdicionar,
+    setQuantidadeAdicionar,
+    abrirModalAdicionarQuantidade,
+    fecharModalAdicionarQuantidade,
+    handleAdicionarQuantidade,
   } = useProdutos();
   const [termoBusca, setTermoBusca] = React.useState('');
   const [categoriaFiltro, setCategoriaFiltro] = React.useState('TODAS');
@@ -134,6 +141,7 @@ export default function Produtos() {
                   
                   <td className="produtos-td text-right">
                     <button className="produtos-btn-editar" onClick={() => abrirModalEdicao(produto)}>Editar</button>
+                    <button className="produtos-btn-adicionar" onClick={() => abrirModalAdicionarQuantidade(produto)}>+ Estoque</button>
                     <button className="produtos-btn-excluir" onClick={() => handleExcluirProduto(produto.id)}>Excluir</button>
                   </td>
                 </tr>
@@ -207,6 +215,46 @@ export default function Produtos() {
               <div className="produtos-modal-footer">
                 <button type="button" className="produtos-btn-cancelar" onClick={() => fecharModal()}>Cancelar</button>
                 <button type="submit" className="produtos-btn-principal">Salvar Produto</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL PARA ADICIONAR ESTOQUE */}
+      {isModalAdicionarAberto && produtoSelecionado && (
+        <div className="produtos-modal-overlay">
+          <div className="produtos-modal-content">
+            <h2 className="produtos-modal-title">
+              Adicionar Estoque - {produtoSelecionado.nome}
+            </h2>
+            
+            <div className="produtos-info-estoque">
+              <p><strong>Quantidade atual:</strong> {produtoSelecionado.quantidade ?? 0}</p>
+            </div>
+
+            <form onSubmit={handleAdicionarQuantidade} className="produtos-form">
+              <div className="produtos-form-group">
+                <label className="produtos-label">Quantidade a Adicionar</label>
+                <input 
+                  type="number"
+                  min="1"
+                  step="1"
+                  required 
+                  className="produtos-input" 
+                  value={quantidadeAdicionar}
+                  onChange={e => setQuantidadeAdicionar(e.target.value)} 
+                  autoFocus
+                />
+              </div>
+
+              <div className="produtos-form-group">
+                <p><strong>Nova quantidade:</strong> {(produtoSelecionado.quantidade ?? 0) + (parseInt(quantidadeAdicionar) || 0)}</p>
+              </div>
+
+              <div className="produtos-modal-footer">
+                <button type="button" className="produtos-btn-cancelar" onClick={() => fecharModalAdicionarQuantidade()}>Cancelar</button>
+                <button type="submit" className="produtos-btn-principal">Confirmar Adição</button>
               </div>
             </form>
           </div>
