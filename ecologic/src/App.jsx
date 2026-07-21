@@ -11,6 +11,8 @@ import Setores from './modulos/setores/pages/Setores'
 import SetoresAdm from './modulos/setores/pages/SetoresAdm'
 import Relatorios from './modulos/relatorios/pages/Relatorios'
 import { useAuth } from './shared/components/../contexts/AuthContext' // Alinhar caminho do import se necessário
+import EsqueciSenha from './modulos/autenticacao/pages/EsqueciSenha'
+import RedefinirSenha from './modulos/autenticacao/pages/RedefinirSenha'
 
 // REGRA DE NAVEGAÇÃO: Função auxiliar que analisa a URL digitada no navegador 
 // para manter o usuário na página correta mesmo se ele atualizar a tela (F5)
@@ -23,6 +25,8 @@ const getInitialPage = () => {
   if (path === '/setores') return 'setores'
   if (path === '/relatorios') return 'relatorios'
   if (path === '/setores-adm') return 'setores-adm'
+  if (path === '/esqueci-senha') return 'esqueci-senha'
+  if (path === '/redefinir-senha') return 'redefinir-senha' 
   return 'login' // Por padrão, joga para o Login caso não encontre o caminho
 }
 
@@ -101,6 +105,8 @@ function App() {
           {currentPage === 'setores' && <Setores onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'setores-adm' && <SetoresAdm onNavigate={handleNavigateWithMenu} />}
           {currentPage === 'relatorios' && <Relatorios />}
+          {currentPage === 'esqueci-senha' && <EsqueciSenha onNavigate={handleNavigateWithMenu} />}
+          {currentPage === 'redefinir-senha' && <RedefinirSenha onNavigate={handleNavigateWithMenu} />} 
         </main>
       </div>
     </>

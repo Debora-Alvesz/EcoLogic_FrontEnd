@@ -101,7 +101,7 @@ function Login() {
                 <input id="lembrar-login" name="lembrar" type="checkbox" />
                 Lembrar acesso
               </label>
-              <a href="/recuperar-senha">Esqueci minha senha</a>
+              <a href="/esqueci-senha">Esqueci minha senha</a>
             </div>
 
             {erro && <p className="login-message login-message-error">{erro}</p>}
