@@ -7,20 +7,12 @@ import {
   Users,
   Building,
   DollarSign,
-  UserCheck
+  UserCheck,
+  PackageX
 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Cell,
-} from "recharts";
 
 function Dashboard() {
-  const { financialWaste, anomalies, sectors, heatmap, administradores, topSectors, topAdmins, loading, error } = useDashboardData();
+  const { financialWaste, anomalies, sectors, administradores, topSectors, topAdmins, lowStockProducts, loading, error } = useDashboardData();
 
   if (loading) {
     return (
@@ -150,53 +142,58 @@ function Dashboard() {
             <p className="dashboard-ranking-subtitle">Ranking de movimentação financeira por operador do sistema</p>
           </div>
 
-<div className="dashboard-admin-list">
-  {topAdmins.length === 0 ? (
-    <p className="dashboard-ranking-subtitle" style={{ textAlign: "center", padding: "40px 0" }}>
-      Nenhum lançamento efetuado por administradores ainda.
-    </p>
-  ) : (
-    topAdmins.map((adm, i) => (
-      <div key={i} className="dashboard-admin-row">
-        <div className="dashboard-admin-meta">
-          <h4>{adm.nome}</h4>
-          {/* Mudamos aqui para ler adm.registros ou garantir o valor direto */}
-          <p>{adm.cargo} • <strong>{adm.registros || adm.totalRegistros || 0} lançamentos</strong></p>
-        </div>
-        <span className="dashboard-badge-gasto">{adm.gasto}</span>
-      </div>
-    ))
-  )}
-</div>
+          <div className="dashboard-admin-list">
+            {topAdmins.length === 0 ? (
+              <p className="dashboard-ranking-subtitle" style={{ textAlign: "center", padding: "40px 0" }}>
+                Nenhum lançamento efetuado por administradores ainda.
+              </p>
+            ) : (
+              topAdmins.map((adm, i) => (
+                <div key={i} className="dashboard-admin-row">
+                  <div className="dashboard-admin-meta">
+                    <h4>{adm.nome}</h4>
+                    <p>{adm.cargo} • <strong>{adm.registros || adm.totalRegistros || 0} lançamentos</strong></p>
+                  </div>
+                  <span className="dashboard-badge-gasto">{adm.gasto}</span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
 
       </div>
 
-      {/* Rodapé: Gráfico Semanal e Detalhes Rápidos */}
+      {/* Rodapé: Estoque Baixo e Detalhes Rápidos */}
       <div className="dashboard-grid-footer">
         
-        {/* Gráfico Semanal */}
+        {/* Produtos com Estoque Baixo */}
         <div className="chart-container">
           <div className="dashboard-section-header">
             <h3 className="dashboard-ranking-title">
-              <span style={{ color: "#d92d20" }}>◆</span> Distribuição Semanal de Desperdício (R$)
+              <PackageX size={18} style={{ color: "#d92d20" }} />
+              Produtos com Estoque Baixo
             </h3>
-            <p className="dashboard-ranking-subtitle">Custos associados estritamente a anomalias de retiradas nos últimos 7 dias</p>
+            <p className="dashboard-ranking-subtitle">Itens com menos de 3 unidades disponíveis no almoxarifado</p>
           </div>
-          
-          <div style={{ width: "100%", height: "250px", marginTop: "16px" }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={heatmap} barCategoryGap="35%">
-                <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{ fill: "#667085", fontSize: 12, fontWeight: 500 }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: "#98a2b3", fontSize: 11 }} tickFormatter={(v) => `R$${v}`} width={45} />
-                <Tooltip cursor={{ fill: "#f9fafb" }} formatter={(value) => [`R$ ${value},00`, "Prejuízo Estimado"]} contentStyle={{ borderRadius: 8, border: "1px solid #eaecf0", fontSize: 13, boxShadow: "0px 4px 6px -2px rgba(16, 24, 40, 0.03)" }} />
-                <Bar dataKey="valor" radius={[4, 4, 0, 0]}>
-                  {heatmap.map((entry, idx) => (
-                    <Cell key={idx} fill={entry.alerta ? "#d92d20" : "#0066cc"} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+
+          <div className="dashboard-admin-list" style={{ marginTop: "16px" }}>
+            {lowStockProducts.length === 0 ? (
+              <p className="dashboard-ranking-subtitle" style={{ textAlign: "center", padding: "40px 0" }}>
+                Nenhum produto com estoque crítico no momento.
+              </p>
+            ) : (
+              lowStockProducts.map((produto, i) => (
+                <div key={i} className="dashboard-admin-row">
+                  <div className="dashboard-admin-meta">
+                    <h4>{produto.nome}</h4>
+                    <p>Estoque atual</p>
+                  </div>
+                  <span className="delta-tag-red">
+                    <AlertTriangle size={14} /> {produto.estoque} {produto.unidade}
+                  </span>
+                </div>
+              ))
+            )}
           </div>
         </div>
 

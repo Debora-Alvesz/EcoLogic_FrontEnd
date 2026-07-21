@@ -8,10 +8,10 @@ export function useDashboardData() {
   const [financialWaste, setFinancialWaste] = useState({ valor: "R$ 0,00", porcentagem: "0%", tendencia: "down" });
   const [anomalies, setAnomalies] = useState({ total: 0, recomendacao: "Analisando..." });
   const [sectors, setSectors] = useState([]);
-  const [heatmap, setHeatmap] = useState([]);
   const [administradores, setAdministradores] = useState([]);
   const [topSectors, setTopSectors] = useState([]);
   const [topAdmins, setTopAdmins] = useState([]);
+  const [lowStockProducts, setLowStockProducts] = useState([]);
 
   useEffect(() => {
     async function buscarECruzarDadosDiretor() {
@@ -97,59 +97,59 @@ export function useDashboardData() {
 
         setTopSectors(rankingSetores);
 
-// =========================================================================
-// 4. AUDITORIA: LANÇAMENTOS POR ADMINISTRADOR (BLINDADO)
-// =========================================================================
-const mapaGastosAdm = {};
+        // =========================================================================
+        // 4. AUDITORIA: LANÇAMENTOS POR ADMINISTRADOR (BLINDADO)
+        // =========================================================================
+        const mapaGastosAdm = {};
 
-// Cria uma lista de controle inicial mapeando os administradores pelo nome
-listaAdmins.forEach(adm => {
-  mapaGastosAdm[adm.nome] = { 
-    nome: adm.nome, 
-    cargo: adm.cargo || "Administrador", 
-    totalGasto: 0, 
-    totalRegistros: 0 
-  };
-});
+        // Cria uma lista de controle inicial mapeando os administradores pelo nome
+        listaAdmins.forEach(adm => {
+          mapaGastosAdm[adm.nome] = { 
+            nome: adm.nome, 
+            cargo: adm.cargo || "Administrador", 
+            totalGasto: 0, 
+            totalRegistros: 0 
+          };
+        });
 
-// Percorre os consumos e vincula ao administrador correto
-listaConsumos.forEach((consumo) => {
-  const produtoRef = listaProdutos.find(p => p.nome === consumo.nomeProduto);
-  
-  if (produtoRef) {
-    const custoItem = consumo.quantidade * (produtoRef.custoUnitario || 0);
-    
-    // 1. Tenta pegar o nome do usuário direto do banco de dados Java
-    let nomeDoAdm = consumo.usuarioNome || consumo.nomeUsuario || consumo.usuario?.nome;
-    
-    // 2. REGRA DE SALVAÇÃO: Se o Java não enviou o usuário, vinculamos pelo setor do cargo!
-    if (!nomeDoAdm) {
-      if (consumo.nomeSetor === "Limpeza") {
-        nomeDoAdm = "Rodrigo Adm"; // Limpeza vai para o Rodrigo
-      } else if (consumo.nomeSetor === "Cantina") {
-        nomeDoAdm = "Maria Cantina"; // Cantina vai para a Maria
-      }
-    }
-    
-    // Se encontrou o administrador (seja pelo nome ou pelo setor), computa os dados
-    if (nomeDoAdm && mapaGastosAdm[nomeDoAdm]) {
-      mapaGastosAdm[nomeDoAdm].totalGasto += custoItem;
-      mapaGastosAdm[nomeDoAdm].totalRegistros += 1; // Soma o lançamento
-    }
-  }
-});
+        // Percorre os consumos e vincula ao administrador correto
+        listaConsumos.forEach((consumo) => {
+          const produtoRef = listaProdutos.find(p => p.nome === consumo.nomeProduto);
+          
+          if (produtoRef) {
+            const custoItem = consumo.quantidade * (produtoRef.custoUnitario || 0);
+            
+            // 1. Tenta pegar o nome do usuário direto do banco de dados Java
+            let nomeDoAdm = consumo.usuarioNome || consumo.nomeUsuario || consumo.usuario?.nome;
+            
+            // 2. REGRA DE SALVAÇÃO: Se o Java não enviou o usuário, vinculamos pelo setor do cargo!
+            if (!nomeDoAdm) {
+              if (consumo.nomeSetor === "Limpeza") {
+                nomeDoAdm = "Rodrigo Adm"; // Limpeza vai para o Rodrigo
+              } else if (consumo.nomeSetor === "Cantina") {
+                nomeDoAdm = "Maria Cantina"; // Cantina vai para a Maria
+              }
+            }
+            
+            // Se encontrou o administrador (seja pelo nome ou pelo setor), computa os dados
+            if (nomeDoAdm && mapaGastosAdm[nomeDoAdm]) {
+              mapaGastosAdm[nomeDoAdm].totalGasto += custoItem;
+              mapaGastosAdm[nomeDoAdm].totalRegistros += 1; // Soma o lançamento
+            }
+          }
+        });
 
-// Organiza o ranking dos administradores por volume de dinheiro
-const rankingAdmins = Object.values(mapaGastosAdm)
-  .sort((a, b) => b.totalGasto - a.totalGasto)
-  .map(a => ({
-    nome: a.nome,
-    cargo: a.cargo,
-    registros: a.totalRegistros, // Envia a quantidade de registros para a tela
-    gasto: new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(a.totalGasto)
-  }));
+        // Organiza o ranking dos administradores por volume de dinheiro
+        const rankingAdmins = Object.values(mapaGastosAdm)
+          .sort((a, b) => b.totalGasto - a.totalGasto)
+          .map(a => ({
+            nome: a.nome,
+            cargo: a.cargo,
+            registros: a.totalRegistros, // Envia a quantidade de registros para a tela
+            gasto: new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(a.totalGasto)
+          }));
 
-setTopAdmins(rankingAdmins);
+        setTopAdmins(rankingAdmins);
 
         // =========================================================================
         // 5. CÁLCULO DE PROPORÇÃO DA BARRA VISUAL DO SETOR
@@ -165,48 +165,22 @@ setTopAdmins(rankingAdmins);
         }));
         setSectors(setoresTratados);
 
-    // =========================================================================
-    // 6. DISTRIBUIÇÃO DOS GASTOS POR DIA DA SEMANA (GRÁFICO) - CORRIGIDO
-    // =========================================================================
-    const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-    const acumuladorDias = { Dom: 0, Seg: 0, Ter: 0, Qua: 0, Qui: 0, Sex: 0, Sáb: 0 };
+        // =========================================================================
+        // 6. PRODUTOS COM ESTOQUE BAIXO (menos de 3 unidades)
+        // =========================================================================
+        const produtosEstoqueBaixo = listaProdutos
+          .filter((p) => {
+            const qtd = p.estoque ?? p.quantidadeEstoque ?? p.qtdEstoque ?? p.quantidade ?? 0;
+            return qtd < 3;
+          })
+          .map((p) => ({
+            nome: p.nome,
+            estoque: p.estoque ?? p.quantidadeEstoque ?? p.qtdEstoque ?? p.quantidade ?? 0,
+            unidade: p.unidade || "un"
+          }))
+          .sort((a, b) => a.estoque - b.estoque); // menor estoque primeiro (mais crítico no topo)
 
-    listaConsumos.forEach((consumo) => {
-    // Executa a lógica apenas para os consumos que são considerados desperdício (mais de 25 itens)
-    if (consumo.dataRetirada && consumo.quantidade > 25) {
-        const produtoRef = listaProdutos.find(p => p.nome === consumo.nomeProduto);
-        
-        if (produtoRef) {
-        const custoItem = consumo.quantidade * (produtoRef.custoUnitario || 0);
-        
-        // Força a formatação da data para evitar fuso horário invertido do JavaScript
-        // Se a data vier como "2026-07-07", nós limpamos os traços para o formato correto
-        const partesData = consumo.dataRetirada.split("-");
-        let dataObjeto;
-        
-        if (partesData.length === 3) {
-            // Cria a data usando Ano, Mês (0 a 11) e Dia puramente
-            dataObjeto = new Date(partesData[0], partesData[1] - 1, partesData[2]);
-        } else {
-            dataObjeto = new Date(consumo.dataRetirada);
-        }
-        
-        const indiceDia = dataObjeto.getDay(); // Retorna um número de 0 (Dom) a 6 (Sáb)
-        const nomeDia = diasSemana[indiceDia];
-        
-        if (nomeDia) {
-            acumuladorDias[nomeDia] += custoItem; // Acumula o valor no dia correspondente
-        }
-        }
-    }
-    });
-
-// Monta a estrutura final lida pelo componente do gráfico de barras (Recharts)
-setHeatmap(diasSemana.map(dia => ({
-  dia: dia,
-  valor: Math.round(acumuladorDias[dia]),
-  alerta: acumuladorDias[dia] > 0 // Pinta a barra de vermelho se houver qualquer desperdício no dia
-})));
+        setLowStockProducts(produtosEstoqueBaixo);
 
         setAnomalies({
           total: listaConsumos.filter(c => c.quantidade > 25).length,
@@ -225,5 +199,5 @@ setHeatmap(diasSemana.map(dia => ({
     buscarECruzarDadosDiretor();
   }, []);
 
-  return { loading, error, financialWaste, anomalies, sectors, heatmap, administradores, topSectors, topAdmins };
+  return { loading, error, financialWaste, anomalies, sectors, administradores, topSectors, topAdmins, lowStockProducts };
 }
