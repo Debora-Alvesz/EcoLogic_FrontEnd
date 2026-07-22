@@ -145,7 +145,7 @@ function CardAcaoRapida({
         <span className="setor-modal-card-label">Registrar Saída</span>
       </div>
 
-      {/* Nome e custo */}
+      {/* Nome, custo e ESTOQUE */}
       <div>
         <p className="setor-modal-card-nome">{produto.nome}</p>
         <p className="setor-modal-card-custo">
@@ -153,6 +153,10 @@ function CardAcaoRapida({
           {custoTotal && (
             <span className="setor-modal-card-custo-total"> · Total: {custoTotal}</span>
           )}
+        </p>
+        {/* NOVA LINHA: Exibição do Estoque Atual */}
+        <p style={{ fontSize: '12px', color: '#0369a1', margin: '4px 0 12px 0', fontWeight: 600, backgroundColor: '#f0f9ff', padding: '4px 8px', borderRadius: '4px', display: 'inline-block' }}>
+          Estoque atual: {produto.quantidade ?? 0} {produto.unidade || 'un'}
         </p>
       </div>
 
@@ -163,6 +167,7 @@ function CardAcaoRapida({
           type="number"
           min="1"
           step="1"
+          max={produto.quantidade ?? undefined} /* Limita o input visualmente ao estoque se quiser */
           inputMode="numeric"
           pattern="\d*"
           placeholder="Qtd."
@@ -227,8 +232,8 @@ function ErroCarregamento({ mensagem, onRetry }) {
 // Componente Principal: SetorModal
 //
 // Props:
-//   isOpen  {boolean}                   — controla visibilidade
-//   onClose {function}                  — callback de fechamento
+//   isOpen  {boolean}                  — controla visibilidade
+//   onClose {function}                 — callback de fechamento
 //   setor   {{ id: number, nome: string }} — objeto do setor selecionado
 // ─────────────────────────────────────────────────────────────────────────────
 export function SetorModal({ isOpen, onClose, setor }) {

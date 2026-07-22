@@ -1,33 +1,33 @@
-/* ============================================================
-   setor-modal.css — Estilos do Mini-Dashboard de Suprimentos
-   Design: Data-Driven UI · Fundo claro · Bordas arredondadas
-   ============================================================ */
 
 /* ── Variáveis de design ────────────────────────────────────── */
 .setor-modal-overlay,
 .setor-modal-overlay * {
-  --sm-bg: #f8f9fa;
+  --sm-bg: #f9fafb;
   --sm-surface: #ffffff;
-  --sm-border: #e9ecef;
-  --sm-shadow: 0 20px 60px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.08);
-  --sm-blue-dark: #1a2f5e;
-  --sm-blue: #2563eb;
-  --sm-blue-light: #eff6ff;
-  --sm-blue-mid: #dbeafe;
-  --sm-text-primary: #111827;
-  --sm-text-secondary: #6b7280;
-  --sm-text-muted: #9ca3af;
-  --sm-danger: #dc2626;
-  --sm-danger-light: #fef2f2;
-  --sm-success: #16a34a;
-  --sm-success-light: #f0fdf4;
-  --sm-warning: #d97706;
-  --sm-warning-light: #fffbeb;
+  --sm-border: #eaecf0;
+  --sm-shadow: 0 20px 60px rgba(16, 24, 40, 0.22), 0 4px 16px rgba(16, 24, 40, 0.08);
+  --sm-blue-dark: #101828;
+  --sm-blue: #0066cc;
+  --sm-blue-hover: #004c99;
+  --sm-blue-light: #f0f7ff;
+  --sm-blue-mid: #d0e7ff;
+  --sm-text-primary: #101828;
+  --sm-text-secondary: #475467;
+  --sm-text-muted: #98a2b3;
+  --sm-danger: #d92d20;
+  --sm-danger-light: #fef3f2;
+  --sm-danger-border: #fecdca;
+  --sm-success: #087443;
+  --sm-success-light: #edfcf2;
+  --sm-success-border: #bbf0d2;
+  --sm-warning: #b54708;
+  --sm-warning-light: #fffaeb;
+  --sm-warning-border: #fde8b3;
   --sm-radius-sm: 8px;
-  --sm-radius-md: 12px;
-  --sm-radius-lg: 16px;
+  --sm-radius-md: 10px;
+  --sm-radius-lg: 12px;
   --sm-radius-pill: 9999px;
-  --sm-font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --sm-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* ── Overlay / Backdrop ─────────────────────────────────────── */
@@ -35,7 +35,7 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(10, 18, 40, 0.55);
+  background: rgba(16, 24, 40, 0.55);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -99,6 +99,7 @@
   align-items: center;
   gap: 6px;
   background: var(--sm-blue-light);
+  border: 1px solid var(--sm-blue-mid);
   color: var(--sm-blue);
   font-size: 11px;
   font-weight: 600;
@@ -113,7 +114,7 @@
 .setor-modal-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--sm-blue-dark);
+  color: var(--sm-text-primary);
   margin: 0;
   line-height: 1.25;
   letter-spacing: -0.3px;
@@ -138,11 +139,12 @@
   justify-content: center;
   color: var(--sm-text-secondary);
   font-size: 18px;
-  transition: background 0.15s, color 0.15s, transform 0.15s;
+  transition: background 0.15s, color 0.15s, transform 0.15s, border-color 0.15s;
 }
 
 .setor-modal-close-btn:hover {
-  background: #fee2e2;
+  background: var(--sm-danger-light);
+  border-color: var(--sm-danger-border);
   color: var(--sm-danger);
   transform: scale(1.08);
 }
@@ -180,7 +182,7 @@
   color: var(--sm-text-primary);
   background: var(--sm-bg);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   box-sizing: border-box;
 }
 
@@ -190,7 +192,7 @@
 
 .setor-modal-search-input:focus {
   border-color: var(--sm-blue);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12);
   background: var(--sm-surface);
 }
 
@@ -213,7 +215,7 @@
 }
 
 .setor-modal-body::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #d0d5dd;
   border-radius: 3px;
 }
 
@@ -243,13 +245,14 @@
   border: 1px solid var(--sm-border);
   border-radius: var(--sm-radius-md);
   padding: 20px 24px 0;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  box-shadow: 0px 2px 8px rgba(16, 24, 40, 0.04);
   overflow: hidden;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, border-color 0.2s;
 }
 
 .setor-modal-destaque-card:hover {
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 102, 204, 0.1);
+  border-color: var(--sm-blue-mid);
 }
 
 .setor-modal-destaque-top {
@@ -271,6 +274,7 @@
   height: 52px;
   border-radius: var(--sm-radius-md);
   background: var(--sm-blue-light);
+  color: var(--sm-blue);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -305,30 +309,30 @@
 }
 
 .setor-modal-badge-tendencia.alta {
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
+  background: var(--sm-danger-light);
+  color: var(--sm-danger);
+  border: 1px solid var(--sm-danger-border);
 }
 
 .setor-modal-badge-tendencia.baixa {
-  background: #f0fdf4;
-  color: #16a34a;
-  border: 1px solid #bbf7d0;
+  background: var(--sm-success-light);
+  color: var(--sm-success);
+  border: 1px solid var(--sm-success-border);
 }
 
 .setor-modal-badge-tendencia.estavel {
-  background: #fffbeb;
-  color: #d97706;
-  border: 1px solid #fde68a;
+  background: var(--sm-warning-light);
+  color: var(--sm-warning);
+  border: 1px solid var(--sm-warning-border);
 }
 
 /* ── Número Gigante ─────────────────────────────────────────── */
 .setor-modal-num-gigante {
   font-size: 64px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--sm-blue-dark);
   line-height: 1;
-  letter-spacing: -2px;
+  letter-spacing: -0.03em;
   margin: 16px 0 4px;
 }
 
@@ -376,9 +380,9 @@
   transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.setor-modal-progresso-fill.alta  { background: linear-gradient(90deg, #ef4444, #dc2626); }
-.setor-modal-progresso-fill.baixa { background: linear-gradient(90deg, #22c55e, #16a34a); }
-.setor-modal-progresso-fill.estavel { background: linear-gradient(90deg, #60a5fa, #2563eb); }
+.setor-modal-progresso-fill.alta    { background: linear-gradient(90deg, #fda29b, var(--sm-danger)); }
+.setor-modal-progresso-fill.baixa   { background: linear-gradient(90deg, #6ce9a6, var(--sm-success)); }
+.setor-modal-progresso-fill.estavel { background: linear-gradient(90deg, #84caff, var(--sm-blue)); }
 
 /* ── Grid de Ações Rápidas ──────────────────────────────────── */
 .setor-modal-grid {
@@ -414,8 +418,8 @@
 }
 
 .setor-modal-card:hover {
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1);
-  border-color: #bfdbfe;
+  box-shadow: 0 4px 16px rgba(0, 102, 204, 0.1);
+  border-color: var(--sm-blue-mid);
   transform: translateY(-2px);
 }
 
@@ -434,6 +438,7 @@
   height: 40px;
   border-radius: var(--sm-radius-sm);
   background: var(--sm-blue-light);
+  color: var(--sm-blue);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -481,7 +486,7 @@
   color: var(--sm-text-primary);
   background: var(--sm-bg);
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   text-align: center;
   min-width: 0;
 }
@@ -493,7 +498,7 @@
 
 .setor-modal-qty-input:focus {
   border-color: var(--sm-blue);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
   background: var(--sm-surface);
 }
 
@@ -514,13 +519,45 @@
 }
 
 .setor-modal-confirm-btn:hover {
-  background: #1d4ed8;
+  background: var(--sm-blue-hover);
   transform: scale(1.08);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.32);
 }
 
 .setor-modal-confirm-btn:active {
   transform: scale(0.95);
+}
+
+.setor-modal-just-input {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 8px;
+  border: 1.5px solid var(--sm-border);
+  border-radius: var(--sm-radius-sm);
+  font-size: 12.5px;
+  font-weight: 400;
+  font-family: var(--sm-font);
+  color: var(--sm-text-primary);
+  background: var(--sm-bg);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.setor-modal-just-input::placeholder {
+  color: var(--sm-text-muted);
+}
+
+.setor-modal-just-input:focus {
+  border-color: var(--sm-blue);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+  background: var(--sm-surface);
+}
+
+.setor-modal-just-input:disabled {
+  background: var(--sm-border);
+  color: var(--sm-text-muted);
+  cursor: not-allowed;
 }
 
 /* ── Feedback do Card (sucesso / erro) ──────────────────────── */
@@ -535,13 +572,13 @@
 .setor-modal-feedback.sucesso {
   background: var(--sm-success-light);
   color: var(--sm-success);
-  border: 1px solid #bbf7d0;
+  border: 1px solid var(--sm-success-border);
 }
 
 .setor-modal-feedback.erro {
   background: var(--sm-danger-light);
   color: var(--sm-danger);
-  border: 1px solid #fecaca;
+  border: 1px solid var(--sm-danger-border);
 }
 
 @keyframes sm-fade-in {
