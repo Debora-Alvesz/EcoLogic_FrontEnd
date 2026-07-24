@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 const API_BASE_URL = 'http://localhost:8080/api/v1/setores';
 
 export function useSetoresAdm() {
-  const [setorVinculado, setSetorVinculado] = useState(null);
+  const [setoresVinculados, setSetoresVinculados] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export function useSetoresAdm() {
 
         if (!token) {
           console.warn("Nenhum token encontrado. Usuário não está logado.");
-          setSetorVinculado(null);
+          setSetoresVinculados([]);
           setLoading(false);
           return;
         }
@@ -41,27 +41,29 @@ export function useSetoresAdm() {
         if (response.ok) {
           const setores = await response.json();
           
-          // 4. Filtrar o setor batendo o UUID do setor com o UUID decodificado do Token
-          const setorDoAdmin = setores.find(
+          // 4. Filtrar os setores batendo o UUID do setor com o UUID decodificado do Token
+          const setoresDoAdmin = setores.filter(
             (setor) => setor.administradorId === idAdministradorLogado
           );
 
-          if (setorDoAdmin) {
-            setSetorVinculado({
-              ...setorDoAdmin,
-              // Tenta pegar o nome direto do Token, caso o back envie, senão usa texto genérico
-              responsavel: tokenPayload.nome || tokenPayload.name || 'Administrador Logado'
-            });
+          if (setoresDoAdmin.length > 0) {
+            const responsavel = tokenPayload.nome || tokenPayload.name || 'Administrador Logado';
+            setSetoresVinculados(
+              setoresDoAdmin.map(setor => ({
+                ...setor,
+                responsavel
+              }))
+            );
           } else {
-            setSetorVinculado(null);
+            setSetoresVinculados([]);
           }
         } else {
           console.error("Erro na API. Status code:", response.status);
-          setSetorVinculado(null);
+          setSetoresVinculados([]);
         }
       } catch (error) {
         console.error("Erro ao processar as informações do administrador:", error);
-        setSetorVinculado(null);
+        setSetoresVinculados([]);
       } finally {
         setLoading(false);
       }
@@ -76,7 +78,7 @@ export function useSetoresAdm() {
   };
 
   return {
-    setorVinculado,
+    setoresVinculados,
     loading,
     handleVisualizarDetalhes,
   };

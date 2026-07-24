@@ -4,7 +4,7 @@ import { useSetoresAdm } from '../hooks/useSetoresAdm';
 import SetorModal from '../components/SetorModal';
 
 export default function SetoresAdm() {
-  const { setorVinculado, loading, handleVisualizarDetalhes } = useSetoresAdm();
+  const { setoresVinculados, loading, handleVisualizarDetalhes } = useSetoresAdm();
   const [isModalAberto, setIsModalAberto] = useState(false);
   const [setorSelecionado, setSetorSelecionado] = useState(null);
 
@@ -24,7 +24,7 @@ export default function SetoresAdm() {
         {loading ? (
           /* Estado: Carregando dados da API */
           <p className="loading-texto">Buscando suas informações de vínculo...</p>
-        ) : !setorVinculado ? (
+        ) : setoresVinculados.length === 0 ? (
           /* Estado: Nenhum Setor Vinculado ainda */
           <div className="mensagem-vazia-adm">
             <div className="icone-vazio-adm">🏢</div>
@@ -35,42 +35,46 @@ export default function SetoresAdm() {
             </p>
           </div>
         ) : (
-          /* Estado: Setor Vinculado Encontrado */
-          <div className="card-setor-vinculado">
-            <div className="card-header-setor">
-              <div className="info-principal">
-                <span className="badge-status">Setor Designado</span>
-                <h3>{setorVinculado.nome}</h3>
-                <p>Responsável: <strong>{setorVinculado.responsavel}</strong></p>
-              </div>
-              
-              <button 
-                className="btn-visualizar" 
-                onClick={() => {
-                  setSetorSelecionado(setorVinculado);
-                  setIsModalAberto(true);
-                }}
-              >
-                Acessar Painel
-              </button>
-            </div>
-            
-            <div className="card-body-setor">
-              <div className="info-metrica">
-                <span className="metrica-label">Código Identificador</span>
-                <span className="metrica-valor">#{setorVinculado.id}</span>
-              </div>
-              <div className="info-metrica">
-                <span className="metrica-label">Nível de Acesso</span>
-                <span className="metrica-valor tag-admin">Administrador de Setor</span>
-              </div>
-              {setorVinculado.descricao && (
-                <div className="info-metrica">
-                  <span className="metrica-label">Descrição</span>
-                  <span className="metrica-valor">{setorVinculado.descricao}</span>
+          /* Estado: Setores Vinculados Encontrados */
+          <div className="setores-grid">
+            {setoresVinculados.map((setorVinculado) => (
+              <div key={setorVinculado.id} className="card-setor-vinculado">
+                <div className="card-header-setor">
+                  <div className="info-principal">
+                    <span className="badge-status">Setor Designado</span>
+                    <h3>{setorVinculado.nome}</h3>
+                    <p>Responsável: <strong>{setorVinculado.responsavel}</strong></p>
+                  </div>
+                  
+                  <button 
+                    className="btn-visualizar" 
+                    onClick={() => {
+                      setSetorSelecionado(setorVinculado);
+                      setIsModalAberto(true);
+                    }}
+                  >
+                    Acessar Painel
+                  </button>
                 </div>
-              )}
-            </div>
+                
+                <div className="card-body-setor">
+                  <div className="info-metrica">
+                    <span className="metrica-label">Código Identificador</span>
+                    <span className="metrica-valor">#{setorVinculado.id}</span>
+                  </div>
+                  <div className="info-metrica">
+                    <span className="metrica-label">Nível de Acesso</span>
+                    <span className="metrica-valor tag-admin">Administrador de Setor</span>
+                  </div>
+                  {setorVinculado.descricao && (
+                    <div className="info-metrica">
+                      <span className="metrica-label">Descrição</span>
+                      <span className="metrica-valor">{setorVinculado.descricao}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>

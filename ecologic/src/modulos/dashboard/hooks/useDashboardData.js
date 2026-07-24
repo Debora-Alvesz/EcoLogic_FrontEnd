@@ -12,23 +12,34 @@ export function useDashboardData() {
   const [topSectors, setTopSectors] = useState([]);
   const [topAdmins, setTopAdmins] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
+  const [setorModa, setSetorModa] = useState({ setorModa: "Nenhum pedido registrado", frequencia: 0 });
+  const [estatisticasSetores, setEstatisticasSetores] = useState(null);
 
   useEffect(() => {
     async function buscarECruzarDadosDiretor() {
       try {
         setLoading(true);
         const BASE_URL = "http://localhost:8080";
+        const token = localStorage.getItem('token');
+        const headersAuth = token ? { 'Authorization': `Bearer ${token}` } : {};
         
         // 1. BUSCA DE DADOS: O front-end faz as requisições para os 4 endpoints do Spring Boot ao mesmo tempo
-        const [resSetores, resProdutos, resConsumos, resAdmins] = await Promise.all([
-          fetch(`${BASE_URL}/api/v1/setores`),
-          fetch(`${BASE_URL}/produtos`),
-          fetch(`${BASE_URL}/consumos`),
-          fetch(`${BASE_URL}/api/v1/usuarios/tipo/administradores`)
+        const [resSetores, resProdutos, resConsumos, resAdmins, resModaSetor] = await Promise.all([
+          fetch(`${BASE_URL}/api/v1/setores`, { headers: headersAuth }),
+          fetch(`${BASE_URL}/produtos`, { headers: headersAuth }),
+          fetch(`${BASE_URL}/consumos`, { headers: headersAuth }),
+          fetch(`${BASE_URL}/api/v1/usuarios/tipo/administradores`, { headers: headersAuth }),
+          fetch(`${BASE_URL}/estatisticas/setor/moda`, { headers: headersAuth })
         ]);
 
         if (!resSetores.ok || !resProdutos.ok || !resConsumos.ok || !resAdmins.ok) {
           throw new Error("Erro ao conectar com o banco de dados.");
+        }
+
+        // Processa a resposta da Moda do setor (tratamento separado para não quebrar o Dashboard se falhar)
+        if (resModaSetor.ok) {
+          const dadosModa = await resModaSetor.json();
+          setSetorModa(dadosModa);
         }
 
         // Transforma as respostas do Java em listas utilizáveis no JavaScript
@@ -74,7 +85,7 @@ export function useDashboardData() {
         const mapaGastosSetor = {};
 
         // Cria uma lista inicial contendo todos os setores da escola zerados
-        listaSetores.forEach(s => mapaGastosSetor[s.nome] = { nome: s.nome, totalGasto: 0 });
+        listaSetores.forEach(s => mapaGastosSetor[s.nome] = { id: s.id, nome: s.nome, totalGasto: 0 });
 
         // Percorre as saídas e soma o valor financeiro dentro de cada setor correspondente
         listaConsumos.forEach((consumo) => {
@@ -90,12 +101,50 @@ export function useDashboardData() {
         const rankingSetores = Object.values(mapaGastosSetor)
           .sort((a, b) => b.totalGasto - a.totalGasto)
           .map(s => ({
+            id: s.id,
             nome: s.nome,
             gasto: new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(s.totalGasto),
             bruto: s.totalGasto
           }));
 
         setTopSectors(rankingSetores);
+
+        // =========================================================================
+        // 3.1 CÁLCULO LOCAL DOS QUARTIS (Termômetro de Gastos)
+        // =========================================================================
+        const calcularEstatisticas = (setores) => {
+          if (!setores || setores.length === 0) return null;
+
+          // 1. Extrai apenas os valores financeiros e ordena do menor para o maior
+          const gastosOrdenados = setores.map((s) => s.bruto).sort((a, b) => a - b);
+          const n = gastosOrdenados.length;
+
+          // 2. Função interna para encontrar os quartis com precisão
+          const getQuartil = (percentil) => {
+            const pos = (percentil / 100) * (n - 1);
+            const base = Math.floor(pos);
+            const resto = pos - base;
+            
+            if (gastosOrdenados[base + 1] !== undefined) {
+              // Faz uma média ponderada se a posição cair entre dois números
+              return gastosOrdenados[base] + resto * (gastosOrdenados[base + 1] - gastosOrdenados[base]);
+            } else {
+              return gastosOrdenados[base];
+            }
+          };
+
+          // 3. Define Q1 e Q3
+          const q1 = getQuartil(25);
+          const q3 = getQuartil(75);
+
+          // 4. Calcula o Limite Máximo Tolerável (Fórmula do Outlier)
+          const iqr = q3 - q1; 
+          const limiteSuperior = q3 + (1.5 * iqr); 
+
+          return { q1, q3, limiteSuperior };
+        };
+
+        setEstatisticasSetores(calcularEstatisticas(rankingSetores));
 
         // =========================================================================
         // 4. AUDITORIA: LANÇAMENTOS POR ADMINISTRADOR (BLINDADO)
@@ -199,5 +248,5 @@ export function useDashboardData() {
     buscarECruzarDadosDiretor();
   }, []);
 
-  return { loading, error, financialWaste, anomalies, sectors, administradores, topSectors, topAdmins, lowStockProducts };
+  return { loading, error, financialWaste, anomalies, sectors, administradores, topSectors, topAdmins, lowStockProducts, setorModa, estatisticasSetores };
 }

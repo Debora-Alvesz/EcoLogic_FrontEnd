@@ -30,6 +30,9 @@ export default function ProdutosPage() {
   const [modalEstoqueAberto, setModalEstoqueAberto] = useState(false);
   const [produtoEstoque, setProdutoEstoque] = useState(null);
 
+  const [modalEstatisticasAberto, setModalEstatisticasAberto] = useState(false);
+  const [produtoEstatisticas, setProdutoEstatisticas] = useState(null);
+
   // --- CARREGAMENTO INICIAL ---
   const carregarDadosDoSistema = async () => {
     setCarregando(true);
@@ -109,6 +112,11 @@ export default function ProdutosPage() {
   const abrirModalEstoque = (p) => {
     setProdutoEstoque(p);
     setModalEstoqueAberto(true);
+  };
+
+  const abrirModalEstatisticas = (p) => {
+    setProdutoEstatisticas(p);
+    setModalEstatisticasAberto(true);
   };
 
   const adicionarEstoque = async (qtdAdicionar) => {
@@ -283,6 +291,7 @@ export default function ProdutosPage() {
                     <td className="right figure" style={{ fontWeight: 600 }}>{p.quantidade ?? 0}</td>
                     <td className="right">
                       <span className="row-actions">
+                        <button title="Estatísticas" onClick={() => abrirModalEstatisticas(p)}>📊</button>
                         <button title="+ Estoque" onClick={() => abrirModalEstoque(p)}>➕</button>
                         <button title="Editar" onClick={() => abrirModalProduto(p)}>✎</button>
                         <button title="Excluir" className="del" onClick={() => excluirProduto(p.id)}>🗑</button>
@@ -327,6 +336,14 @@ export default function ProdutosPage() {
           produto={produtoEstoque}
           onFechar={() => setModalEstoqueAberto(false)}
           onSalvar={adicionarEstoque}
+        />
+      )}
+
+      {/* MODAL ESTATÍSTICAS */}
+      {modalEstatisticasAberto && produtoEstatisticas && (
+        <EstatisticasModal 
+          produto={produtoEstatisticas}
+          onFechar={() => setModalEstatisticasAberto(false)}
         />
       )}
     </div>
@@ -466,6 +483,118 @@ function EstoqueModal({ produto, onFechar, onSalvar }) {
             <button type="submit" className="btn-primary">Confirmar</button>
           </div>
         </form>
+      </div>
+    </div>
+  );
+}
+
+/* ==========================================================================
+   MODAL: ESTATÍSTICAS
+   ========================================================================== */
+function EstatisticasModal({ produto, onFechar }) {
+  const [estatisticas, setEstatisticas] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState('');
+
+  useEffect(() => {
+    const carregarEstatisticas = async () => {
+      try {
+        setCarregando(true);
+        const response = await api.get(`/estatisticas/produto/${produto.id}`);
+        setEstatisticas(response.data);
+      } catch (err) {
+        setErro("Erro ao carregar estatísticas.");
+      } finally {
+        setCarregando(false);
+      }
+    };
+    
+    if (produto?.id) {
+      carregarEstatisticas();
+    }
+  }, [produto]);
+
+  return (
+    <div className="overlay open" onClick={onFechar}>
+      <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px', width: '90%' }}>
+        <div className="modal-head">
+          <h3>Estatísticas de Consumo - {produto.nome}</h3>
+          <button type="button" onClick={onFechar}>✕</button>
+        </div>
+        
+        <div style={{ padding: '20px 0' }}>
+          {carregando ? (
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '40px' }}>
+              <Loader2 className="animate-spin" size={32} style={{ color: 'var(--primary, #12b886)' }} />
+            </div>
+          ) : erro ? (
+            <p style={{ color: 'red', textAlign: 'center' }}>{erro}</p>
+          ) : estatisticas ? (
+            <div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+                {/* Card 1 (Vermelho/Alerta) */}
+                <div style={{ 
+                  background: '#fff5f5', 
+                  border: '1px solid #feb2b2', 
+                  borderRadius: '8px', 
+                  padding: '20px',
+                  boxShadow: '0 2px 4px rgba(245, 101, 101, 0.1)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  textAlign: 'center'
+                }}>
+                  <h4 style={{ color: '#c53030', margin: '0 0 10px 0', fontSize: '15px' }}>Média de pacotes por pedido</h4>
+                  <p style={{ color: '#e53e3e', fontSize: '32px', fontWeight: 'bold', margin: 0 }}>
+                    {estatisticas.media !== undefined ? estatisticas.media.toLocaleString('pt-BR') : '0'}
+                  </p>
+                </div>
+                
+                {/* Card 2 (Verde/Normal) */}
+                <div style={{ 
+                  background: '#f0fff4', 
+                  border: '1px solid #9ae6b4', 
+                  borderRadius: '8px', 
+                  padding: '20px',
+                  boxShadow: '0 2px 4px rgba(72, 187, 120, 0.1)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  textAlign: 'center'
+                }}>
+                  <h4 style={{ color: '#276749', margin: '0 0 10px 0', fontSize: '15px' }}>Consumo típico (Mediana)</h4>
+                  <p style={{ color: '#38a169', fontSize: '32px', fontWeight: 'bold', margin: 0 }}>
+                    {estatisticas.mediana !== undefined ? estatisticas.mediana.toLocaleString('pt-BR') : '0'} pacotes
+                  </p>
+                </div>
+              </div>
+              
+              <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '8px', borderLeft: '4px solid #4299e1' }}>
+                <p style={{ margin: 0, fontSize: '14px', color: '#4a5568', lineHeight: '1.5' }}>
+                  {(() => {
+                    const media = estatisticas.media || 0;
+                    const mediana = estatisticas.mediana || 0;
+                    const diff = Math.abs(media - mediana);
+                    
+                    if (diff <= 1) { // Valores iguais ou bem próximos
+                      return "O consumo deste produto é estável e padronizado, sem pedidos fora do comum no histórico.";
+                    } else if (media > mediana) {
+                      return "A média está elevada devido a pedidos atípicos de grande volume. A mediana representa o consumo diário mais fiel.";
+                    } else {
+                      return "A média está sendo puxada para baixo por vários pedidos de volumes muito pequenos.";
+                    }
+                  })()}
+                </p>
+              </div>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="modal-actions" style={{ justifyContent: 'flex-end' }}>
+          <button type="button" className="btn-confirmar" onClick={onFechar}>Fechar</button>
+        </div>
       </div>
     </div>
   );

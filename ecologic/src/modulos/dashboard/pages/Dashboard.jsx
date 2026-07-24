@@ -8,11 +8,50 @@ import {
   Building,
   DollarSign,
   UserCheck,
-  PackageX
+  PackageX,
+  BarChart3
 } from "lucide-react";
 
 function Dashboard() {
-  const { financialWaste, anomalies, sectors, administradores, topSectors, topAdmins, lowStockProducts, loading, error } = useDashboardData();
+  const { financialWaste, anomalies, sectors, administradores, topSectors, topAdmins, lowStockProducts, setorModa, estatisticasSetores, loading, error } = useDashboardData();
+
+  // Função auxiliar para renderizar o selo/badge do Quartil de cada setor
+  const renderBadgeQuartil = (setor) => {
+    if (!estatisticasSetores) return null;
+
+    let bg = '#f7fafc';
+    let color = '#4a5568';
+    let border = '#cbd5e0';
+    let texto = 'Intervalo Interquartil (Dentro da média)';
+
+    if (setor.bruto > estatisticasSetores.limiteSuperior) {
+      bg = '#fff5f5'; color = '#c53030'; border = '#feb2b2';
+      texto = 'Alerta: Custo Extremo (Outlier)';
+    } else if (setor.bruto > estatisticasSetores.q3) {
+      bg = '#fffff0'; color = '#b7791f'; border = '#f6e05e';
+      texto = '4º Quartil (Gasto Elevado)';
+    } else if (setor.bruto <= estatisticasSetores.q1) {
+      bg = '#f0fff4'; color = '#276749'; border = '#9ae6b4';
+      texto = '1º Quartil (Econômico)';
+    }
+
+    return (
+      <span style={{
+        display: 'inline-block',
+        background: bg,
+        color: color,
+        border: `1px solid ${border}`,
+        borderRadius: '4px',
+        padding: '2px 8px',
+        fontSize: '11px',
+        fontWeight: 600,
+        marginLeft: '8px',
+        whiteSpace: 'nowrap'
+      }}>
+        {texto}
+      </span>
+    );
+  };
 
   if (loading) {
     return (
@@ -118,9 +157,10 @@ function Dashboard() {
             {topSectors.map((setor, idx) => (
               <div key={idx} className="dashboard-ranking-item">
                 <div className="dashboard-item-info">
-                  <span className="dashboard-item-name">
+                  <span className="dashboard-item-name" style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                     <span className="dashboard-position-tag">#{idx + 1}</span>
                     {setor.nome}
+                    {renderBadgeQuartil(setor)}
                   </span>
                   <span className="dashboard-item-value">{setor.gasto}</span>
                 </div>
@@ -161,6 +201,64 @@ function Dashboard() {
           </div>
         </div>
 
+      </div>
+
+      {/* Painel de Análise de Frequência (Moda Estatística) */}
+      <div className="dashboard-grid-footer" style={{ gridTemplateColumns: '1fr' }}>
+        <div className="card-dashboard-standard" style={{ borderLeft: '4px solid #7c3aed' }}>
+          <div className="dashboard-section-header">
+            <h3 className="dashboard-ranking-title">
+              <BarChart3 size={18} style={{ color: "#7c3aed" }} />
+              Análise de Frequência (Moda)
+            </h3>
+            <p className="dashboard-ranking-subtitle">Setor com maior volume de requisições no sistema</p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '20px' }}>
+            {/* Card Setor Moda */}
+            <div style={{
+              background: '#f5f3ff',
+              border: '1px solid #c4b5fd',
+              borderRadius: '8px',
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center'
+            }}>
+              <p style={{ color: '#6d28d9', fontSize: '13px', fontWeight: 600, margin: '0 0 8px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Setor Mais Frequente</p>
+              <p style={{ color: '#4c1d95', fontSize: '28px', fontWeight: 'bold', margin: 0 }}>
+                {setorModa.setorModa}
+              </p>
+            </div>
+
+            {/* Card Frequência */}
+            <div style={{
+              background: '#eff6ff',
+              border: '1px solid #93c5fd',
+              borderRadius: '8px',
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center'
+            }}>
+              <p style={{ color: '#1d4ed8', fontSize: '13px', fontWeight: 600, margin: '0 0 8px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Total de Requisições</p>
+              <p style={{ color: '#1e40af', fontSize: '28px', fontWeight: 'bold', margin: 0 }}>
+                {setorModa.frequencia} pedidos
+              </p>
+            </div>
+          </div>
+
+          <div style={{ background: '#f8fafc', padding: '15px', borderRadius: '8px', borderLeft: '4px solid #7c3aed', marginTop: '20px' }}>
+            <p style={{ margin: 0, fontSize: '14px', color: '#4a5568', lineHeight: '1.6' }}>
+              {setorModa.frequencia > 0
+                ? `O setor que mais realiza requisições no sistema é a ${setorModa.setorModa}, representando a Moda estatística dos nossos registros, com ${setorModa.frequencia} pedidos no total.`
+                : "Nenhum pedido foi registrado no sistema até o momento. Os dados de frequência serão exibidos assim que os setores começarem a realizar requisições."
+              }
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Rodapé: Estoque Baixo e Detalhes Rápidos */}
